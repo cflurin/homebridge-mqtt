@@ -32,7 +32,7 @@ Add the mqtt-platform in config.json in your home directory inside `.homebridge`
   "platforms": [
     {
       "platform": "mqtt",
-      "name": "mqtt"
+      "name": "mqtt",
       "url": "mqtt://127.0.0.1"
     }
   ],           
@@ -52,8 +52,8 @@ The data (payload) is sent/received in a JSON format using following topics:
 * homebridge/to/remove
 * homebridge/to/get
 * homebridge/to/set
-* homebridge/from/set
 * homebridge/from/get
+* homebridge/from/set
 * homebridge/from/response
 
 
@@ -91,6 +91,21 @@ payload: {"ack": true, "message": "accessory 'flex_lamp' is removed."}
 
 ```sh
 topic: homebridge/to/get
+payload: {"name": "outdoor_temp"}
+```
+
+homebridge sends the accessory definition:
+
+```sh
+topic: homebridge/from/response
+payload:
+  {
+    "outdoor_temp": {"service": "TemperatureSensor", "characteristics": {"CurrentTemperature": "13.4"}}
+  }
+```
+
+```sh
+topic: homebridge/to/get
 payload: {"name": "*"}
 ```
 
@@ -106,19 +121,6 @@ payload:
   }
 ```
 
-```sh
-topic: homebridge/to/get
-payload: {"name": "outdoor_temp"}
-```
-
-```sh
-topic: homebridge/from/response
-payload:
-  {
-    "outdoor_temp": {"service": "TemperatureSensor", "characteristics": {"CurrentTemperature": "13.4"}}
-  }
-```
-
 **set value (to homebridge)**
 
 ```sh
@@ -126,7 +128,7 @@ topic: homebridge/to/set
 payload: {"name": "flex_lamp", "characteristic": "On", "value": true}
 ```
 
-**get value**
+**get value (to homebridge)**
 
 ```sh
 topic: homebridge/from/get
@@ -142,6 +144,8 @@ Homebridge-mqtt will return the cached value to HomeKit. Optionally you can publ
 topic: homebridge/from/set
 payload: {"name": "flex_lamp", "characteristic": "On", "value": true}
 ```
+
+**define characterstic**
 
 The required characteristics are added with the default properties. If you need to change the default, define the characteristic-name with the properties. e.g.:
 
