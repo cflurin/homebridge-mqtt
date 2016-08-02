@@ -33,7 +33,7 @@ Add the mqtt-platform in config.json in your home directory inside `.homebridge`
     {
       "platform": "mqtt",
       "name": "mqtt"
-      "uri": "mqtt://127.0.0.1"
+      "url": "mqtt://127.0.0.1"
     }
   ],           
 
@@ -41,11 +41,11 @@ Add the mqtt-platform in config.json in your home directory inside `.homebridge`
 }
 ```
 
-Replace 127.0.0.1 with the ip-address of your mqtt broker.
+Replace `127.0.0.1` with the ip-address of your mqtt broker.
 
 ### mqtt API
 
-The data is sent/received in a JSON format using following topics:
+The data (payload) is sent/received in a JSON format using following topics:
 
 
 * homebridge/to/add
@@ -59,10 +59,11 @@ The data is sent/received in a JSON format using following topics:
 
 **Howto examples:**
 
-**homebridge/to/add**
+**add accessory**
 
 ```sh
-{"name": "flex_lamp", "service": "Switch"}
+topic: homebridge/to/add
+payload: {"name": "flex_lamp", "service": "Switch"}
 ```
 
 After the new accessory is added homebridge-mqtt sends an acknowledge message:
@@ -72,10 +73,11 @@ topic: homebridge/from/response
 payload: {"ack": true, "message": "accessory 'flex_lamp' is added."}
 ```
 
-**homebridge/to/remove**
+**remove accessory**
 
 ```sh
-{"name": "flex_lamp"}
+topic: homebridge/to/remove
+payload: {"name": "flex_lamp"}
 ```
 
 After the accessory is removed homebridge sends an acknowledge message:
@@ -85,80 +87,92 @@ topic: homebridge/from/response
 payload: {"ack": true, "message": "accessory 'flex_lamp' is removed."}
 ```
 
-**homebridge/to/get)**
+**get accessoy/accessories**
 
 ```sh
-{"name": "*"}
+topic: homebridge/to/get
+payload: {"name": "*"}
 ```
 
 homebridge sends an accessories list:
 
 ```sh
-{
-  "node_switch":{"service":"Switch","characteristics":{"On":true}},
-  "office_lamp":{"service":"Lightbulb","characteristics":{"On":"blank","Brightness":65}},
-  "at_home":{"service":"OccupancySensor","characteristics":{"OccupancyDetected":1}}
-}
+topic: homebridge/from/response
+payload:
+  {
+    "node_switch":{"service":"Switch","characteristics":{"On":true}},
+    "office_lamp":{"service":"Lightbulb","characteristics":{"On":"blank","Brightness":65}},
+    "at_home":{"service":"OccupancySensor","characteristics":{"OccupancyDetected":1}}
+  }
 ```
 
 ```sh
-{"name": "outdoor_temp"}
+topic: homebridge/to/get
+payload: {"name": "outdoor_temp"}
 ```
 
-homebridge sends the accessory JSON object:
-
 ```sh
-{
-  "outdoor_temp": {"service": "TemperatureSensor", "characteristics": {"CurrentTemperature": "13.4"}}
-}
+topic: homebridge/from/response
+payload:
+  {
+    "outdoor_temp": {"service": "TemperatureSensor", "characteristics": {"CurrentTemperature": "13.4"}}
+  }
 ```
 
-**homebridge/to/set**
+**set value (to homebridge)**
 
 ```sh
-{"name": "flex_lamp", "characteristic": "On", "value": true}
+topic: homebridge/to/set
+payload: {"name": "flex_lamp", "characteristic": "On", "value": true}
 ```
 
-**homebridge/from/get**
+**get value**
 
 ```sh
-{"name": "flex_lamp", "characteristic": "On"}
+topic: homebridge/from/get
+payload: {"name": "flex_lamp", "characteristic": "On"}
 ```
 
 Homebridge-mqtt will return the cached value to HomeKit. Optionally you can publish the actual value using
 `homebridge/to/set`.
 
-**homebridge/from/set**
+**set value (from homebridge)**
 
 ```sh
-{"name": "flex_lamp", "characteristic": "On", "value": true}
+topic: homebridge/from/set
+payload: {"name": "flex_lamp", "characteristic": "On", "value": true}
 ```
 
 The required characteristics are added with the default properties. If you need to change the default, define the characteristic-name with the properties. e.g.:
 
 ```sh
-{
-  "name": "temp_living",
-  "service": "TemperatureSensor",
-  "CurrentTemperature": {"minValue": -20, "maxValue": 60,"minStep": 1}
-}
+topic: homebridge/to/add
+payload:
+  {
+    "name": "living_temp",
+    "service": "TemperatureSensor",
+    "CurrentTemperature": {"minValue": -20, "maxValue": 60,"minStep": 1}
+  }
 ```
 
 To add an optional charachteristic define the characteristic-name with "default" or with the properties. e.g.:
 
 ```sh
-{"name": "living_lamp", "service": "Lightbulb", "Brightness": "default"}
+topic: homebridge/to/add
+payload: {"name": "living_lamp", "service": "Lightbulb", "Brightness": "default"}
 ```
 
 ```sh
-{
-  "name": "bathroom_blind",
-  "service": "WindowCovering",
-  "CurrentPosition": {"minStep": 5},
-  "TargetPosition": {"minStep": 5},
-  "CurrentHorizontalTiltAngle": {"minValue": 0, "minStep": 5},
-  "TargetHorizontalTiltAngle": {"minValue": 0, "minStep": 5}
-}
+topic: homebridge/to/add
+payload:
+  {
+    "name": "bathroom_blind",
+    "service": "WindowCovering",
+    "CurrentPosition": {"minStep": 5},
+    "TargetPosition": {"minStep": 5},
+    "CurrentHorizontalTiltAngle": {"minValue": 0, "minStep": 5},
+    "TargetHorizontalTiltAngle": {"minValue": 0, "minStep": 5}
+  }
 
 ```
 
