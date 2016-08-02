@@ -163,7 +163,12 @@ To add an optional charachteristic define the characteristic-name with "default"
 
 ```sh
 topic: homebridge/to/add
-payload: {"name": "living_lamp", "service": "Lightbulb", "Brightness": "default"}
+payload: 
+  {
+    "name": "living_lamp",
+    "service": "Lightbulb",
+    "Brightness": "default"
+  }
 ```
 
 ```sh
