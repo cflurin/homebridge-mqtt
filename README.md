@@ -109,7 +109,7 @@ topic: homebridge/to/get
 payload: {"name": "*"}
 ```
 
-homebridge sends an accessories list:
+homebridge sends all accessory definitions:
 
 ```sh
 topic: homebridge/from/response
@@ -121,7 +121,7 @@ payload:
   }
 ```
 
-**set value (to homebridge)**
+**set value (from homebridge)**
 
 ```sh
 topic: homebridge/to/set
