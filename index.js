@@ -3,7 +3,7 @@
 var util = require('util');
 var Utils = require('./lib/utils.js').Utils;
 var MqttAccessory = require('./lib/accessory.js').Accessory;
-var Mqtt = require('./lib/Mqtt.js').Mqtt;
+var Mqtt = require('./lib/mqtt.js').Mqtt;
 
 var Accessory, Service, Characteristic, UUIDGen;
 var cachedAccessories = 0;
