@@ -121,14 +121,14 @@ payload:
   }
 ```
 
-**set value (from homebridge)**
+**set value (to homebridge)**
 
 ```sh
 topic: homebridge/to/set
 payload: {"name": "flex_lamp", "characteristic": "On", "value": true}
 ```
 
-**get value (to homebridge)**
+**get value (from homebridge)**
 
 ```sh
 topic: homebridge/from/get
