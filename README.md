@@ -185,7 +185,7 @@ payload:
 
 ```
 
-[HomeKitTypes.js](https://github.com/KhaosT/HAP-NodeJS/blob/master/lib/gen/HomeKitTypes.js) describes all the predifined Services, Characteristcs, format and properties for the `value` eg.:
+[HomeKitTypes.js](https://github.com/KhaosT/HAP-NodeJS/blob/master/lib/gen/HomeKitTypes.js) describes all the predifined Services, Characteristcs, format and properties for the `value` e.g.:
 
 ```
 /**
@@ -234,6 +234,10 @@ Derived from this:
 service = ContactSenor
 characteristic = ContactSensorState
 format = UINT8
-properties = 0 or 1
+property = 0 or 1
 ```
+
+### Node-red example
+
+![node-red-mqtt](https://cloud.githubusercontent.com/assets/5056710/17394282/9ac0afbc-5a28-11e6-8d6e-01d2e1a32870.jpg)
 
