@@ -185,4 +185,55 @@ payload:
 
 ```
 
-[HomeKitTypes.js](https://github.com/KhaosT/HAP-NodeJS/blob/master/lib/gen/HomeKitTypes.js) describes all the predifined Services and Characteristcs.
+[HomeKitTypes.js](https://github.com/KhaosT/HAP-NodeJS/blob/master/lib/gen/HomeKitTypes.js) describes all the predifined Services, Characteristcs, format and properties for the `value` eg.:
+
+```
+/**
+ * Service "Contact Sensor"
+ */
+
+Service.ContactSensor = function(displayName, subtype) {
+  Service.call(this, displayName, '00000080-0000-1000-8000-0026BB765291', subtype);
+
+  // Required Characteristics
+  this.addCharacteristic(Characteristic.ContactSensorState);
+
+  // Optional Characteristics
+  this.addOptionalCharacteristic(Characteristic.StatusActive);
+  this.addOptionalCharacteristic(Characteristic.StatusFault);
+  this.addOptionalCharacteristic(Characteristic.StatusTampered);
+  this.addOptionalCharacteristic(Characteristic.StatusLowBattery);
+  this.addOptionalCharacteristic(Characteristic.Name);
+};
+
+/**
+ * Characteristic "Contact Sensor State"
+ */
+
+Characteristic.ContactSensorState = function() {
+  Characteristic.call(this, 'Contact Sensor State', '0000006A-0000-1000-8000-0026BB765291');
+  this.setProps({
+    format: Characteristic.Formats.UINT8,
+    perms: [Characteristic.Perms.READ, Characteristic.Perms.NOTIFY]
+  });
+  this.value = this.getDefaultValue();
+};
+
+inherits(Characteristic.ContactSensorState, Characteristic);
+
+Characteristic.ContactSensorState.UUID = '0000006A-0000-1000-8000-0026BB765291';
+
+// The value property of ContactSensorState must be one of the following:
+Characteristic.ContactSensorState.CONTACT_DETECTED = 0;
+Characteristic.ContactSensorState.CONTACT_NOT_DETECTED = 1;
+```
+
+Derived from this:
+
+```
+service = ContactSenor
+characteristic = ContactSensorState
+format = UINT8
+properties = 0 or 1
+```
+
