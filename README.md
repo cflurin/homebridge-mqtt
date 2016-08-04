@@ -231,7 +231,7 @@ Characteristic.ContactSensorState.CONTACT_NOT_DETECTED = 1;
 Derived from this:
 
 ```
-service = ContactSenor
+service = ContactSensor
 characteristic = ContactSensorState
 format = UINT8
 property = 0 or 1
