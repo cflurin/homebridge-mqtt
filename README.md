@@ -90,7 +90,7 @@ payload: {"ack": true, "message": "accessory 'flex_lamp' is removed."}
 **get accessoy/accessories**
 
 The purpose of this topic is to retrieve accessory Definitions.
-Use `homebridge/from/set` for control your devices.
+Use `homebridge/from/set` to control your devices.
 
 ```sh
 topic: homebridge/to/get
