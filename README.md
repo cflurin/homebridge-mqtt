@@ -244,3 +244,4 @@ property = 0 or 1
 
 ![node-red-mqtt](https://cloud.githubusercontent.com/assets/5056710/17394282/9ac0afbc-5a28-11e6-8d6e-01d2e1a32870.jpg)
 
+For more examples take a look at the [wiki](https://github.com/cflurin/homebridge-mqtt/wiki)
