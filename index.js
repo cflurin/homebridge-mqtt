@@ -39,6 +39,7 @@ function MqttPlatform(log, config, api) {
   this.log("%s v%s", plugin_name, plugin_version);
   
   var params = {
+    "config": config,
     "log": this.log,
     "plugin_name": plugin_name,
     "accessories": this.accessories,
