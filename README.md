@@ -34,6 +34,7 @@ Add the mqtt-platform in config.json in your home directory inside `.homebridge`
       "platform": "mqtt",
       "name": "mqtt",
       "url": "mqtt://127.0.0.1",
+      "topic_prefix": "homebridge",
       "username": "foo",
       "password": "bar"
     }

@@ -46,10 +46,13 @@ function MqttPlatform(log, config, api) {
   var plugin_version = Utils.readPluginVersion();
   this.log("%s v%s", plugin_name, plugin_version);
   
+  var topic_prefix = config.topic_prefix || "homebridge";
+  
   var params = {
     "config": config,
     "log": this.log,
     "plugin_name": plugin_name,
+    "topic_prefix": topic_prefix,
     "accessories": this.accessories,
     "Characteristic": Characteristic,
     "addAccessory": this.addAccessory.bind(this),
