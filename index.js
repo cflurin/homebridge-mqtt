@@ -57,7 +57,8 @@ function MqttPlatform(log, config, api) {
     "Characteristic": Characteristic,
     "addAccessory": this.addAccessory.bind(this),
     "removeAccessory": this.removeAccessory.bind(this),
-    "getAccessories": this.getAccessories.bind(this)
+    "getAccessories": this.getAccessories.bind(this),
+    "updateReachability": this.updateReachability.bind(this)
   }
   this.Mqtt = new Mqtt(params);
 
@@ -167,6 +168,30 @@ MqttPlatform.prototype.removeAccessory = function(name) {
   this.Mqtt.sendAck(ack, message);
 }
 
+MqttPlatform.prototype.updateReachability = function(accessory) {
+  
+  var name, reachable, ack, message;
+  name = accessory.name;
+  reachable = accessory.reachable;
+  
+  //this.log.debug("updateReachability %s %s", name, reachable);
+    
+  if (typeof(this.accessories[name]) !== "undefined") {
+    this.log.debug("updateReachability '%s'", name);
+    
+    this.accessories[name].reachable = reachable;
+    this.hap_accessories[name].updateReachability(reachable);
+    
+    ack = true;
+    message = "accessory '" + name + "' reachability set to '" + reachable;
+  } else {
+    ack = false;
+    message = "accessory '" + name + "' not found."; 
+  }
+  this.log("updateReachability %s", message);
+  this.Mqtt.sendAck(ack, message);
+}
+
 MqttPlatform.prototype.getAccessories = function(name) {
 
   var accessories = {};
@@ -208,4 +233,5 @@ MqttPlatform.prototype.buildParams = function (accessoryDef) {
   //this.log.debug("configureAccessories %s", JSON.stringify(params.accessory_config));
   return params;
 }
+
 

@@ -151,6 +151,15 @@ topic: homebridge/from/set
 payload: {"name": "flex_lamp", "characteristic": "On", "value": true}
 ```
 
+**set reachability**
+
+```sh
+topic: homebridge/to/set/reachability
+payload: {"name": "flex_lamp", "reachable": true}
+or
+payload: {"name": "flex_lamp", "reachable": false}
+```
+
 **define characterstic**
 
 The required characteristics are added with the default properties. If you need to change the default, define the characteristic-name with the properties. e.g.:
