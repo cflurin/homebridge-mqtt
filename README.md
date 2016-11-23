@@ -22,26 +22,14 @@ Add the mqtt-platform in config.json in your home directory inside `.homebridge`
 
 ```sh
 {
-  "bridge": {
-    "name": "Homebridge",
-    "username": "CC:22:3D:E3:CE:30",
-    "port": 51826,
-    "pin": "031-45-154"
-  },
-  
-  "platforms": [
-    {
-      "platform": "mqtt",
-      "name": "mqtt",
-      "url": "mqtt://127.0.0.1",
-      "topic_prefix": "homebridge",
-      "username": "foo",
-      "password": "bar"
-    }
-  ],           
-
-  "accessories": []
+  "platform": "mqtt",
+  "name": "mqtt",
+  "url": "mqtt://127.0.0.1",
+  "topic_prefix": "homebridge",
+  "username": "foo",
+  "password": "bar"
 }
+
 ```
 
 Replace `127.0.0.1` with the ip-address of your mqtt broker.
