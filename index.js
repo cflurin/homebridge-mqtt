@@ -58,7 +58,8 @@ function MqttPlatform(log, config, api) {
     "addAccessory": this.addAccessory.bind(this),
     "removeAccessory": this.removeAccessory.bind(this),
     "getAccessories": this.getAccessories.bind(this),
-    "updateReachability": this.updateReachability.bind(this)
+    "updateReachability": this.updateReachability.bind(this),
+    "addService": this.addService.bind(this)
   }
   this.Mqtt = new Mqtt(params);
 
@@ -87,6 +88,7 @@ function MqttPlatform(log, config, api) {
 MqttPlatform.prototype.addAccessory = function(accessoryDef) {
 
   var name = accessoryDef.name;
+  var service_name = accessoryDef.service;
   var ack, message;
   var isValid;
   
@@ -95,24 +97,27 @@ MqttPlatform.prototype.addAccessory = function(accessoryDef) {
     
     var newAccessory = new Accessory(name, uuid);
     newAccessory.reachable = true;
-    newAccessory.context.service_name = accessoryDef.service;
     
     //this.log.debug("addAccessory UUID = %s", newAccessory.UUID);
     
     var i_accessory = new MqttAccessory(this.buildParams(accessoryDef));
-    isValid = i_accessory.addService(newAccessory);
+    
+    isValid = i_accessory.addService(newAccessory, service_name);
+    
     if (isValid) {
-      i_accessory.configureAccessory(newAccessory);
+      i_accessory.configureAccessory(newAccessory, service_name);
+      
+      i_accessory.configureIdentity(newAccessory);
       
       this.accessories[name] = i_accessory;
       this.hap_accessories[name] = newAccessory;
       this.api.registerPlatformAccessories(plugin_name, platform_name, [newAccessory]);
       
       ack = true;
-      message =  "accessory '" + name + "' is added.";
+      message =  "accessory '" + name + "', subtype 'primary' is added.";
     } else {
       ack = false;
-      message = "service '" + accessoryDef.service + "' undefined.";
+      message = "service '" + service_name + "' undefined.";
     }
   } else {
     ack = false;
@@ -122,17 +127,54 @@ MqttPlatform.prototype.addAccessory = function(accessoryDef) {
   this.Mqtt.sendAck(ack, message);
 }
 
+MqttPlatform.prototype.addService = function(accessoryDef) {
+
+  var name= accessoryDef.name;
+  var service_name = accessoryDef.service;
+  var subtype = accessoryDef.subtype;
+  
+  var ack, message;
+  var isValid;
+  
+  //this.log.debug("addService %s service_name %s", JSON.stringify(accessory), service_name);
+  
+  if (typeof this.hap_accessories[name] === "undefined") {
+    message = "accessory '" + name + "' undefined.";
+    ack = false;
+  } else if (typeof this.hap_accessories[name].services[1].subtype === "undefined") {
+    message = "Please remove the accessory '" + name + "'and add it again before adding multiple services";
+    ack = false;
+  } else if (this.accessories[name].subtypes.indexOf(subtype) > -1) {
+    message = "subtype '" + subtype + "' is already used.";
+    ack = false;
+  } else {
+    isValid = this.accessories[name].addService(this.hap_accessories[name], service_name, subtype);
+          
+    if (isValid) {
+      this.accessories[name].configureAccessory(this.hap_accessories[name], service_name, subtype);
+    
+      message = "service '" + service_name + "', subtype '" + subtype + "' is added.";
+      ack = true;
+    } else {
+      message = "service '" + service_name + "' undefined.";
+      ack = false;
+    }
+  }
+  
+  this.log("addService %s", message);
+  this.Mqtt.sendAck(ack, message);
+}
+
 MqttPlatform.prototype.configureAccessory = function(accessory) {
 
-  //this.log.debug("configureAccessory %s", JSON.stringify(accessory.services, null, 2));
+  //this.log.debug("configureAccessory %s", JSON.stringify(accessory, null, 2));
   
   cachedAccessories++;
   var name = accessory.displayName;
   var uuid = accessory.UUID;
-    
+  
   var accessoryDef = {};
   accessoryDef.name = name;
-  accessoryDef.service = accessory.context.service_name;
   
   if (this.accessories[name]) {
     this.log.error("configureAccessory %s UUID %s already used.", name, uuid);
@@ -142,8 +184,10 @@ MqttPlatform.prototype.configureAccessory = function(accessory) {
   accessory.reachable = true;
     
   var i_accessory = new MqttAccessory(this.buildParams(accessoryDef));
-  i_accessory.configureAccessory(accessory);
   
+  i_accessory.configureAccessory(accessory);
+  i_accessory.configureIdentity(accessory);
+
   this.accessories[name] = i_accessory;
   this.hap_accessories[name] = accessory;
 }
@@ -173,7 +217,6 @@ MqttPlatform.prototype.updateReachability = function(accessory) {
   var name, reachable, ack, message;
   name = accessory.name;
   reachable = accessory.reachable;
-  
   //this.log.debug("updateReachability %s %s", name, reachable);
     
   if (typeof(this.accessories[name]) !== "undefined") {
@@ -205,7 +248,7 @@ MqttPlatform.prototype.getAccessories = function(name) {
         //this.log("getAccessories %s", JSON.stringify(this.accessories[k], null, 2));
         service = this.accessories[k].service_name;
         characteristics =  this.accessories[k].i_value;
-        def = {"service": service, "characteristics": characteristics};
+        def = {"services": service, "characteristics": characteristics};
         accessories[k] = def;
       }
     break;
@@ -213,7 +256,7 @@ MqttPlatform.prototype.getAccessories = function(name) {
     default:
       service = this.accessories[name].service_name;
       characteristics =  this.accessories[name].i_value;
-      def = {"service": service, "characteristics": characteristics};
+      def = {"services": service, "characteristics": characteristics};
       accessories[name] = def;
   }
 
