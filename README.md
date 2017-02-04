@@ -269,10 +269,11 @@ To set a multiple services characteristic define a `subtype`:
 
 ```sh
 topic: homebridge/to/set
-payload: {"name": "multi_sensor", "subtype": "living_humidity","characteristic": "CurrentRelativeHumidity", "value": 40}
+payload: {"name": "multi_sensor", "subtype": "living_humidity", "characteristic": "CurrentRelativeHumidity", "value": 40}
 ```
 
 **Note 1:** the `primary` service can been set without `subtype`.
+
 **Note 2:** To add a sevice to an existing accessory (created prior version 0.3.0) please first remove the accessory and add it again.
 
 

@@ -74,8 +74,12 @@ function MqttPlatform(log, config, api) {
 
     this.api.on('didFinishLaunching', function() {
       this.log("Plugin - DidFinishLaunching");
+      
+      for (var k in this.accessories) {
+        this.accessories[k].getSubtype(this.hap_accessories[k]);
+      }
      
-     this.Mqtt.connect(this.url);
+      this.Mqtt.connect(this.url);
              
       this.log.debug("Number of chaced Accessories: %s", cachedAccessories);
       this.log("Number of Accessories: %s", Object.keys(this.accessories).length);
@@ -144,7 +148,7 @@ MqttPlatform.prototype.addService = function(accessoryDef) {
   } else if (typeof this.hap_accessories[name].services[1].subtype === "undefined") {
     message = "Please remove the accessory '" + name + "'and add it again before adding multiple services";
     ack = false;
-  } else if (this.accessories[name].subtypes.indexOf(subtype) > -1) {
+  } else if (this.accessories[name].subtypesList.indexOf(subtype) > -1) {
     message = "subtype '" + subtype + "' is already used.";
     ack = false;
   } else {
