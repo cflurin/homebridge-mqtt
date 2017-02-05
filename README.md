@@ -248,7 +248,7 @@ First add an accessory
 
 ```sh
 topic: homebridge/to/add
-payload: {"name": "multi_sensor", "service_name": "Temperatur", "service": "TemperatureSensor"}
+payload: {"name": "multi_sensor", "service_name": "Temperature", "service": "TemperatureSensor"}
 ```
 
 Now add a service
@@ -261,7 +261,7 @@ payload: {"name": "multi_sensor", "service_name": "Humidity", "service": "Humidi
 add more services
 ```sh
 topic: homebridge/to/add/service
-payload: {"name": "multi_sensor", "service_name": "Light", "service":"LightSensor"}
+payload: {"name": "multi_sensor", "service_name": "Light", "service": "LightSensor"}
 ```
 
 Set a characteristic:
