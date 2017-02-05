@@ -17,7 +17,7 @@ Install homebridge-mqtt:
 sudo npm install -g homebridge-mqtt
 ```
 
-## Configuration
+### Configuration
 Add the mqtt-platform in config.json in your home directory inside `.homebridge`.
 
 ```sh
@@ -34,6 +34,7 @@ Add the mqtt-platform in config.json in your home directory inside `.homebridge`
 
 Replace `127.0.0.1` with the ip-address of your mqtt broker.
 
+#
 # mqtt API
 
 The data (payload) is sent/received in a JSON format using following topics:
@@ -240,6 +241,7 @@ format = UINT8
 property = 0 or 1
 ```
 
+#
 # Multliple Services
 
 The latest version supports multliple services. To handle multiple services a new property `service_name` has been introduced.
@@ -267,7 +269,7 @@ topic: homebridge/to/add/service
 payload: {"name": "multi_sensor", "service_name": "Light", "service": "LightSensor"}
 ```
 
-**set value (to homebridge)**
+### set value (to homebridge)
 
 ```sh
 topic: homebridge/to/set
@@ -276,7 +278,7 @@ payload: {"name": "multi_sensor", "service_name": "Humidity", "characteristic": 
 
 **Note:** To add a sevice to an existing accessory (created prior version 0.3.0) please first remove the accessory and add it again.
 
-
+#
 # Node-red example
 
 ![node-red-mqtt](https://cloud.githubusercontent.com/assets/5056710/17394282/9ac0afbc-5a28-11e6-8d6e-01d2e1a32870.jpg)
