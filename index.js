@@ -97,7 +97,7 @@ MqttPlatform.prototype.addAccessory = function(accessoryDef) {
   var ack, message;
   var isValid;
   
-  // v0.2.4 backwards compatibility
+  // backwards compatible to v0.2.4
   if (typeof accessoryDef.service_name !== "undefined" ) {
     service_name = accessoryDef.service_name;
   } else {
@@ -153,10 +153,9 @@ MqttPlatform.prototype.addService = function(accessoryDef) {
   if (typeof this.hap_accessories[name] === "undefined") {
     message = "accessory '" + name + "' undefined.";
     ack = false;
-    // todo
-  //} else if (typeof this.hap_accessories[name].services[1].service_name === "undefined") {
-  //  message = "Please remove the accessory '" + name + "'and add it again before adding multiple services";
-  //  ack = false;
+  } else if (typeof this.hap_accessories[name].context.service_types === "undefined") {
+    message = "Please remove the accessory '" + name + "'and add it again before adding multiple services";
+    ack = false;
   } else if (this.accessories[name].service_namesList.indexOf(service_name) > -1) {
     message = "service_name '" + service_name + "' is already used.";
     ack = false;
@@ -166,7 +165,7 @@ MqttPlatform.prototype.addService = function(accessoryDef) {
     if (isValid) {
       this.accessories[name].configureAccessory(this.hap_accessories[name], service_name, service_type);
     
-      message = "service '" + service_type + "', service_name '" + service_name + "' is added.";
+      message = "service_name '" + service_name + "', service '" + service_type + "' is added.";
       ack = true;
     } else {
       message = "service '" + service_type + "' undefined.";

@@ -17,7 +17,7 @@ Install homebridge-mqtt:
 sudo npm install -g homebridge-mqtt
 ```
 
-### Configuration
+## Configuration
 Add the mqtt-platform in config.json in your home directory inside `.homebridge`.
 
 ```sh
@@ -34,7 +34,7 @@ Add the mqtt-platform in config.json in your home directory inside `.homebridge`
 
 Replace `127.0.0.1` with the ip-address of your mqtt broker.
 
-### mqtt API
+# mqtt API
 
 The data (payload) is sent/received in a JSON format using following topics:
 
@@ -48,9 +48,9 @@ The data (payload) is sent/received in a JSON format using following topics:
 * homebridge/from/response
 
 
-**Howto examples:**
+## Howto examples
 
-**add accessory**
+### add accessory
 
 ```sh
 topic: homebridge/to/add
@@ -64,7 +64,7 @@ topic: homebridge/from/response
 payload: {"ack": true, "message": "accessory 'flex_lamp' is added."}
 ```
 
-**remove accessory**
+### remove accessory
 
 ```sh
 topic: homebridge/to/remove
@@ -78,7 +78,7 @@ topic: homebridge/from/response
 payload: {"ack": true, "message": "accessory 'flex_lamp' is removed."}
 ```
 
-**get accessoy/accessories**
+### get accessoy/accessories
 
 The purpose of this topic is to retrieve accessory Definitions.
 Use `homebridge/from/set` to control your devices.
@@ -115,14 +115,14 @@ payload:
   }
 ```
 
-**set value (to homebridge)**
+### set value (to homebridge)
 
 ```sh
 topic: homebridge/to/set
 payload: {"name": "flex_lamp", "characteristic": "On", "value": true}
 ```
 
-**get value (from homebridge)**
+### get value (from homebridge)
 
 ```sh
 topic: homebridge/from/get
@@ -132,14 +132,14 @@ payload: {"name": "flex_lamp", "characteristic": "On"}
 Homebridge-mqtt will return the cached value to HomeKit. Optionally you can publish the actual value using
 `homebridge/to/set`.
 
-**set value (from homebridge)**
+### set value (from homebridge)
 
 ```sh
 topic: homebridge/from/set
 payload: {"name": "flex_lamp", "characteristic": "On", "value": true}
 ```
 
-**set reachability**
+### set reachability
 
 ```sh
 topic: homebridge/to/set/reachability
@@ -148,7 +148,7 @@ or
 payload: {"name": "flex_lamp", "reachable": false}
 ```
 
-**define characterstic**
+### define characterstic
 
 The required characteristics are added with the default properties. If you need to change the default, define the characteristic-name with the properties. e.g.:
 
@@ -240,41 +240,44 @@ format = UINT8
 property = 0 or 1
 ```
 
-### Multliple Services
+# Multliple Services
 
 The latest version supports multliple services. To handle multiple services a new property `service_name` has been introduced.
+**Note:** 'remove accessory', 'get accessory/accessories' and 'set reachability' don't need the property 'service_name'.
 
-First add an accessory
+## Howto examples 
+
+### First add an accessory
 
 ```sh
 topic: homebridge/to/add
 payload: {"name": "multi_sensor", "service_name": "Temperature", "service": "TemperatureSensor"}
 ```
 
-Now add a service
+### Now add a service
 
 ```sh
 topic: homebridge/to/add/service
 payload: {"name": "multi_sensor", "service_name": "Humidity", "service": "HumiditySensor"}
 ```
 
-add more services
+### add more services
 ```sh
 topic: homebridge/to/add/service
 payload: {"name": "multi_sensor", "service_name": "Light", "service": "LightSensor"}
 ```
 
-Set a characteristic:
+**set value (to homebridge)**
 
 ```sh
 topic: homebridge/to/set
 payload: {"name": "multi_sensor", "service_name": "Humidity", "characteristic": "CurrentRelativeHumidity", "value": 40}
 ```
 
-**Note 2:** To add a sevice to an existing accessory (created prior version 0.3.0) please first remove the accessory and add it again.
+**Note:** To add a sevice to an existing accessory (created prior version 0.3.0) please first remove the accessory and add it again.
 
 
-### Node-red example
+# Node-red example
 
 ![node-red-mqtt](https://cloud.githubusercontent.com/assets/5056710/17394282/9ac0afbc-5a28-11e6-8d6e-01d2e1a32870.jpg)
 
