@@ -242,37 +242,34 @@ property = 0 or 1
 
 ### Multliple Services
 
-The latest version supports multliple services. To handle multiple services a new variable `subtype` has been introduced.
+The latest version supports multliple services. To handle multiple services a new property `service_name` has been introduced.
 
 First add an accessory
 
 ```sh
 topic: homebridge/to/add
-payload: {"name": "multi_sensor", "service": "TemperatureSensor"}
+payload: {"name": "multi_sensor", "service_name": "Temperatur", "service": "TemperatureSensor"}
 ```
-TemperatureSensor is the `primary` service.
 
 Now add a service
 
 ```sh
 topic: homebridge/to/add/service
-payload: {"name": "multi_sensor", "subtype": "living_humidity", "service": "HumiditySensor"}
+payload: {"name": "multi_sensor", "service_name": "Humidity", "service": "HumiditySensor"}
 ```
 
 add more services
 ```sh
 topic: homebridge/to/add/service
-payload: {"name": "multi_sensor", "subtype": "living_light", "service": "LightSensor"}
+payload: {"name": "multi_sensor", "service_name": "Light", "service":"LightSensor"}
 ```
 
-To set a multiple services characteristic define a `subtype`:
+Set a characteristic:
 
 ```sh
 topic: homebridge/to/set
-payload: {"name": "multi_sensor", "subtype": "living_humidity", "characteristic": "CurrentRelativeHumidity", "value": 40}
+payload: {"name": "multi_sensor", "service_name": "Humidity", "characteristic": "CurrentRelativeHumidity", "value": 40}
 ```
-
-**Note 1:** the `primary` service can been set without `subtype`.
 
 **Note 2:** To add a sevice to an existing accessory (created prior version 0.3.0) please first remove the accessory and add it again.
 
