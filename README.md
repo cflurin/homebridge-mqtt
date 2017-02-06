@@ -47,7 +47,7 @@ The data (payload) is sent/received in a JSON format using following topics:
 * homebridge/from/get
 * homebridge/from/set
 * homebridge/from/response
-
+* homebridge/from/identify
 
 ## Howto examples
 
@@ -149,6 +149,13 @@ or
 payload: {"name": "flex_lamp", "reachable": false}
 ```
 
+### identify accessory
+
+```sh
+topic: homebridge/from/identify
+payload: {"name": "flex_lamp"}
+```
+
 ### define characterstic
 
 The required characteristics are added with the default properties. If you need to change the default, define the characteristic-name with the properties. e.g.:
@@ -245,7 +252,7 @@ property = 0 or 1
 # Multliple Services
 
 The latest version supports multliple services. To handle multiple services a new property `service_name` has been introduced.
-**Note:** 'remove accessory', 'get accessory/accessories' and 'set reachability' don't need the property 'service_name'.
+**Note:** `remove accessory`, `get accessory/accessories` and `set reachability` don't need the property `service_name`.
 
 ## Howto examples 
 
