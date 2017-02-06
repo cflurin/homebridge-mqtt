@@ -283,7 +283,7 @@ topic: homebridge/to/set
 payload: {"name": "multi_sensor", "service_name": "Humidity", "characteristic": "CurrentRelativeHumidity", "value": 40}
 ```
 
-**Note:** To add a sevice to an existing accessory (created prior version 0.3.0) please first remove the accessory and add it again.
+**Note:** To add a service to an existing accessory (created prior version 0.3.0) please first remove the accessory and add it again.
 
 #
 # Node-red example
