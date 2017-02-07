@@ -1,4 +1,6 @@
 # homebridge-mqtt
+[![npm version](https://badge.fury.io/js/homebridge-mqtt.svg)](https://badge.fury.io/js/homebridge-mqtt)
+
 Homebridge-mqtt is a Plugin for Homebridge. The mqtt-API supports the main homebridge functions. This allows you to add and control accessories from a "Bridge" or "Gateway" with a mqtt API. [Node-RED](http://nodered.org/) is the perfect platform to use with homebridge-mqtt.
 
 Note-RED is a visual tool for wiring together hardware devices, APIs and online services.

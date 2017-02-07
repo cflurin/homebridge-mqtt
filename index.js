@@ -68,7 +68,7 @@ function MqttPlatform(log, config, api) {
       this.log("A new version %s is avaiable", npm_version);
     }
   }.bind(this));
-
+    
   if (api) {
     this.api = api;
 
@@ -77,15 +77,15 @@ function MqttPlatform(log, config, api) {
       
       for (var k in this.accessories) {
         this.accessories[k].getService_names(this.hap_accessories[k]);
+        //this.log.debug("MqttPlatform %s", JSON.stringify(this.hap_accessories[k], null, 2));
       }
-     
+      
       this.Mqtt.connect(this.url);
              
       this.log.debug("Number of chaced Accessories: %s", cachedAccessories);
       this.log("Number of Accessories: %s", Object.keys(this.accessories).length);
 
     }.bind(this));
-    //this.log.debug("MqttPlatform %s", JSON.stringify(this.accessories));
   }
 }
 
