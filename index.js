@@ -68,7 +68,7 @@ function MqttPlatform(log, config, api) {
       this.log("A new version %s is avaiable", npm_version);
     }
   }.bind(this));
-    
+
   if (api) {
     this.api = api;
 
@@ -79,7 +79,7 @@ function MqttPlatform(log, config, api) {
         this.accessories[k].getService_names(this.hap_accessories[k]);
         //this.log.debug("MqttPlatform %s", JSON.stringify(this.hap_accessories[k], null, 2));
       }
-      
+
       this.Mqtt.connect(this.url);
              
       this.log.debug("Number of chaced Accessories: %s", cachedAccessories);
@@ -120,6 +120,14 @@ MqttPlatform.prototype.addAccessory = function(accessoryDef) {
       i_accessory.configureAccessory(newAccessory, service_name, service_type);
       
       i_accessory.configureIdentity(newAccessory);
+      
+      var timestamp = new Date().toISOString().slice(0,16);
+    
+      newAccessory
+        .getService(Service.AccessoryInformation)
+        .setCharacteristic(Characteristic.Manufacturer, "homebridge-mqtt")
+        .setCharacteristic(Characteristic.Model, service_type)   // primary service_type
+        .setCharacteristic(Characteristic.SerialNumber, timestamp);
       
       this.accessories[name] = i_accessory;
       this.hap_accessories[name] = newAccessory;
