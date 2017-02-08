@@ -43,9 +43,12 @@ The data (payload) is sent/received in a JSON format using following topics:
 
 
 * homebridge/to/add
+* homebridge/to/add/service
 * homebridge/to/remove
 * homebridge/to/get
 * homebridge/to/set
+* homebridge/to/set/reachability
+* homebridge/to/set/accessoryinformation
 * homebridge/from/get
 * homebridge/from/set
 * homebridge/from/response
@@ -149,6 +152,13 @@ topic: homebridge/to/set/reachability
 payload: {"name": "flex_lamp", "reachable": true}
 or
 payload: {"name": "flex_lamp", "reachable": false}
+```
+
+### set accessory information
+
+```sh
+topic: homebridge/to/set/accessoryinformation
+payload: {"name": "flex_lamp", "manufacturer": "espressif", "model": "esp8266-12", "serialnumber": "4711"}
 ```
 
 ### identify accessory

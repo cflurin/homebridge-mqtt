@@ -11,6 +11,7 @@ var cachedAccessories = 0;
 var platform_name = "mqtt";
 var plugin_name = "homebridge-" + platform_name;
 var storagePath;
+var plugin_version;
 
 module.exports = function(homebridge) {
   console.log("homebridge API version: " + homebridge.version);
@@ -43,7 +44,7 @@ function MqttPlatform(log, config, api) {
     process.exit(1);
   }
      
-  var plugin_version = Utils.readPluginVersion();
+  plugin_version = Utils.readPluginVersion();
   this.log("%s v%s", plugin_name, plugin_version);
   
   var topic_prefix = config.topic_prefix || "homebridge";
@@ -59,6 +60,7 @@ function MqttPlatform(log, config, api) {
     "removeAccessory": this.removeAccessory.bind(this),
     "getAccessories": this.getAccessories.bind(this),
     "updateReachability": this.updateReachability.bind(this),
+    "setAccessoryInformation": this.setAccessoryInformation.bind(this),
     "addService": this.addService.bind(this)
   }
   this.Mqtt = new Mqtt(params);
@@ -95,7 +97,6 @@ MqttPlatform.prototype.addAccessory = function(accessoryDef) {
   var service_type = accessoryDef.service;
   var service_name;
   var ack, message;
-  var isValid;
   
   // backwards compatible to v0.2.4
   if (typeof accessoryDef.service_name !== "undefined" ) {
@@ -104,47 +105,44 @@ MqttPlatform.prototype.addAccessory = function(accessoryDef) {
     service_name = name;  
   }
 
-  if (!this.accessories[name]) {
+  if (typeof Service[service_type] === "undefined") {
+    ack = false;
+    message = "service '" + service_type + "' undefined.";
+  } else if (typeof this.accessories[name] !== "undefined") {
+    ack = false;
+    message = "name '" + name + "' is already used.";
+  } else {
     var uuid = UUIDGen.generate(name);
     
     var newAccessory = new Accessory(name, uuid);
-    newAccessory.reachable = true;
-    
     //this.log.debug("addAccessory UUID = %s", newAccessory.UUID);
     
     var i_accessory = new MqttAccessory(this.buildParams(accessoryDef));
     
-    isValid = i_accessory.addService(newAccessory, service_name, service_type);
+    i_accessory.addService(newAccessory, service_name, service_type);
     
-    if (isValid) {
-      i_accessory.configureAccessory(newAccessory, service_name, service_type);
-      
-      i_accessory.configureIdentity(newAccessory);
-      
-      var timestamp = new Date().toISOString().slice(0,16);
+    i_accessory.configureAccessory(newAccessory, service_name, service_type);
     
-      newAccessory
-        .getService(Service.AccessoryInformation)
-        .setCharacteristic(Characteristic.Manufacturer, "homebridge-mqtt")
-        .setCharacteristic(Characteristic.Model, service_type)   // primary service_type
-        .setCharacteristic(Characteristic.SerialNumber, timestamp);
-      
-      this.accessories[name] = i_accessory;
-      this.hap_accessories[name] = newAccessory;
-      this.api.registerPlatformAccessories(plugin_name, platform_name, [newAccessory]);
-      
-      ack = true;
-      message =  "accessory '" + name + "', service_name '" + service_name + "' is added.";
-    } else {
-      ack = false;
-      message = "service '" + service_type + "' undefined.";
-    }
-  } else {
-    ack = false;
-    message = "name '" + name + "' is already used.";
+    i_accessory.configureIdentity(newAccessory);
+    
+    newAccessory.reachable = true;
+    
+    this.accessories[name] = i_accessory;
+    this.hap_accessories[name] = newAccessory;
+    this.api.registerPlatformAccessories(plugin_name, platform_name, [newAccessory]);
+    
+    ack = true;
+    message =  "accessory '" + name + "', service_name '" + service_name + "' is added.";
   }
+  
   this.log("addAccessory %s", message);
   this.Mqtt.sendAck(ack, message);
+  
+  if (ack) {
+    var now = new Date().toISOString().slice(0,16);
+    var plugin_v = "v" + plugin_version;
+    this.setAccessoryInformation({"name":name,"manufacturer":"homebridge-mqtt","model": plugin_v,"serialnumber":now}, false);
+  }
 }
 
 MqttPlatform.prototype.addService = function(accessoryDef) {
@@ -154,31 +152,26 @@ MqttPlatform.prototype.addService = function(accessoryDef) {
   var service_name = accessoryDef.service_name;
   
   var ack, message;
-  var isValid;
-  
-  //this.log.debug("addService %s service_type %s", JSON.stringify(accessory), service_type);
   
   if (typeof this.hap_accessories[name] === "undefined") {
     message = "accessory '" + name + "' undefined.";
     ack = false;
-  } else if (typeof this.hap_accessories[name].context.service_types === "undefined") {
-    message = "Please remove the accessory '" + name + "'and add it again before adding multiple services";
+  } else if (typeof Service[service_type] === "undefined") {
     ack = false;
+    message = "service '" + service_type + "' undefined.";
   } else if (this.accessories[name].service_namesList.indexOf(service_name) > -1) {
     message = "service_name '" + service_name + "' is already used.";
     ack = false;
+  } else if (typeof this.hap_accessories[name].context.service_types === "undefined") {
+    message = "Please remove the accessory '" + name + "'and add it again before adding multiple services";
+    ack = false;
   } else {
-    isValid = this.accessories[name].addService(this.hap_accessories[name], service_name, service_type);
+    this.accessories[name].addService(this.hap_accessories[name], service_name, service_type);
           
-    if (isValid) {
-      this.accessories[name].configureAccessory(this.hap_accessories[name], service_name, service_type);
-    
-      message = "service_name '" + service_name + "', service '" + service_type + "' is added.";
-      ack = true;
-    } else {
-      message = "service '" + service_type + "' undefined.";
-      ack = false;
-    }
+    this.accessories[name].configureAccessory(this.hap_accessories[name], service_name, service_type);
+  
+    message = "service_name '" + service_name + "', service '" + service_type + "' is added.";
+    ack = true;
   }
   
   this.log("addService %s", message);
@@ -234,9 +227,9 @@ MqttPlatform.prototype.removeAccessory = function(name) {
 
 MqttPlatform.prototype.updateReachability = function(accessory) {
   
-  var name, reachable, ack, message;
-  name = accessory.name;
-  reachable = accessory.reachable;
+  var ack, message;
+  var name = accessory.name;
+  var reachable = accessory.reachable;
   //this.log.debug("updateReachability %s %s", name, reachable);
     
   if (typeof(this.accessories[name]) !== "undefined") {
@@ -253,6 +246,45 @@ MqttPlatform.prototype.updateReachability = function(accessory) {
   }
   this.log("updateReachability %s", message);
   this.Mqtt.sendAck(ack, message);
+}
+
+MqttPlatform.prototype.setAccessoryInformation = function(accessory, response) {
+
+  this.log.debug("setAccessoryInformation %s", JSON.stringify(accessory));
+  var message;
+  var ack = false;
+  var name = accessory.name;
+  
+  if (typeof this.hap_accessories[name] === "undefined") {
+    message = "accessory '" + name + "' undefined.";
+    this.Mqtt.sendAck(false, message);
+    this.log("setAccessoryInformation %s", message);
+  } else {
+    var service = this.hap_accessories[name].getService(Service.AccessoryInformation);
+    
+    if (typeof accessory.manufacturer !== "undefined") {
+      service.setCharacteristic(Characteristic.Manufacturer, accessory.manufacturer);
+      ack = true;
+    }
+    if (typeof accessory.model !== "undefined") {
+      service.setCharacteristic(Characteristic.Model, accessory.model);
+      ack = true;
+    }
+    if (typeof accessory.serialnumber !== "undefined") {
+      service.setCharacteristic(Characteristic.SerialNumber, accessory.serialnumber);
+      ack = true;
+    }
+    
+    if (response) {
+      if (ack) {
+        message = "accessory '" + name + "', accessoryinformation is set.";
+      } else {
+        message = "accessory '" + name + "', accessoryinforrmation properties undefined.";
+      }
+      this.Mqtt.sendAck(ack, message);
+      this.log("setAccessoryInformation %s", message);
+    }
+  }
 }
 
 MqttPlatform.prototype.getAccessories = function(name) {
@@ -296,5 +328,3 @@ MqttPlatform.prototype.buildParams = function (accessoryDef) {
   //this.log.debug("configureAccessories %s", JSON.stringify(params.accessory_config));
   return params;
 }
-
-
