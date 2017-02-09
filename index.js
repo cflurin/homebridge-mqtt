@@ -161,6 +161,8 @@ MqttPlatform.prototype.addService = function(accessoryDef) {
   var service_type = accessoryDef.service;
   var service_name = accessoryDef.service_name;
   
+  this.accessories[name].accessoryDef = accessoryDef;
+  
   var ack, message;
   
   if (typeof this.hap_accessories[name] === "undefined") {
