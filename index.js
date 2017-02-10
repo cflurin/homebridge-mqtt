@@ -101,16 +101,16 @@ function MqttPlatform(log, config, api) {
   }
 }
 
-MqttPlatform.prototype.addAccessory = function(accessoryDef) {
+MqttPlatform.prototype.addAccessory = function(m_accessory) {
 
-  var name = accessoryDef.name;
-  var service_type = accessoryDef.service;
+  var name = m_accessory.name;
+  var service_type = m_accessory.service;
   var service_name;
   var ack, message;
   
   // backwards compatible to v0.2.4
-  if (typeof accessoryDef.service_name !== "undefined" ) {
-    service_name = accessoryDef.service_name;
+  if (typeof m_accessory.service_name !== "undefined" ) {
+    service_name = m_accessory.service_name;
   } else {
     service_name = name;  
   }
@@ -127,11 +127,11 @@ MqttPlatform.prototype.addAccessory = function(accessoryDef) {
     var newAccessory = new Accessory(name, uuid);
     //this.log.debug("addAccessory UUID = %s", newAccessory.UUID);
     
-    var i_accessory = new MqttAccessory(this.buildParams(accessoryDef));
+    var i_accessory = new MqttAccessory(this.buildParams());
     
     i_accessory.addService(newAccessory, service_name, service_type);
     
-    i_accessory.configureAccessory(newAccessory, service_name, service_type);
+    i_accessory.configureAccessory(newAccessory, m_accessory, service_name, service_type);
     
     i_accessory.configureIdentity(newAccessory);
     
@@ -155,13 +155,13 @@ MqttPlatform.prototype.addAccessory = function(accessoryDef) {
   }
 }
 
-MqttPlatform.prototype.addService = function(accessoryDef) {
+MqttPlatform.prototype.addService = function(m_accessory) {
 
-  var name= accessoryDef.name;
-  var service_type = accessoryDef.service;
-  var service_name = accessoryDef.service_name;
+  var name= m_accessory.name;
+  var service_type = m_accessory.service;
+  var service_name = m_accessory.service_name;
   
-  this.accessories[name].accessoryDef = accessoryDef;
+  //this.accessories[name].m_accessory = m_accessory;
   
   var ack, message;
   
@@ -180,7 +180,7 @@ MqttPlatform.prototype.addService = function(accessoryDef) {
   } else {
     this.accessories[name].addService(this.hap_accessories[name], service_name, service_type);
           
-    this.accessories[name].configureAccessory(this.hap_accessories[name], service_name, service_type);
+    this.accessories[name].configureAccessory(this.hap_accessories[name], m_accessory, service_name, service_type);
   
     message = "service_name '" + service_name + "', service '" + service_type + "' is added.";
     ack = true;
@@ -198,9 +198,6 @@ MqttPlatform.prototype.configureAccessory = function(accessory) {
   var name = accessory.displayName;
   var uuid = accessory.UUID;
   
-  var accessoryDef = {};
-  accessoryDef.name = name;
-  
   if (this.accessories[name]) {
     this.log.error("configureAccessory %s UUID %s already used.", name, uuid);
     process.exit(1);
@@ -208,7 +205,7 @@ MqttPlatform.prototype.configureAccessory = function(accessory) {
   
   accessory.reachable = true;
     
-  var i_accessory = new MqttAccessory(this.buildParams(accessoryDef));
+  var i_accessory = new MqttAccessory(this.buildParams());
   
   i_accessory.configureAccessory(accessory);
   i_accessory.configureIdentity(accessory);
@@ -302,7 +299,6 @@ MqttPlatform.prototype.setAccessoryInformation = function(accessory, response) {
 MqttPlatform.prototype.getAccessories = function(name) {
 
   var accessories = {};
-  var def = {};
   var service, characteristics;
   
   switch (name) {
@@ -312,26 +308,23 @@ MqttPlatform.prototype.getAccessories = function(name) {
         //this.log("getAccessories %s", JSON.stringify(this.accessories[k], null, 2));
         service = this.accessories[k].service_types;
         characteristics =  this.accessories[k].i_value;
-        def = {"services": service, "characteristics": characteristics};
-        accessories[k] = def;
+        accessories[k] = {"services": service, "characteristics": characteristics};
       }
     break;
     
     default:
       service = this.accessories[name].service_types;
       characteristics =  this.accessories[name].i_value;
-      def = {"services": service, "characteristics": characteristics};
-      accessories[name] = def;
+      accessories[name] = {"services": service, "characteristics": characteristics};
   }
 
   //this.log("getAccessory %s", JSON.stringify(accessories, null, 2));
   this.Mqtt.sendAccessories(accessories);
 }
 
-MqttPlatform.prototype.buildParams = function (accessoryDef) {
+MqttPlatform.prototype.buildParams = function () {
 
   var params = {
-    "accessoryDef": accessoryDef,
     "log": this.log,
     "Service": Service,
     "Characteristic": Characteristic,
