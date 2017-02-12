@@ -1,5 +1,8 @@
 # homebridge-mqtt
-[![npm version](https://badge.fury.io/js/homebridge-mqtt.svg)](https://badge.fury.io/js/homebridge-mqtt)
+
+[![NPM version][npm-image]][npm-url]
+[npm-image]: http://img.shields.io/npm/v/homebridge-mqtt.svg
+[npm-url]: https://npmjs.org/package/homebridge-mqtt
 
 Homebridge-mqtt is a Plugin for Homebridge. The mqtt-API supports the main homebridge functions. This allows you to add and control accessories from a "Bridge" or "Gateway" with a mqtt API. [Node-RED](http://nodered.org/) is the perfect platform to use with homebridge-mqtt.
 
