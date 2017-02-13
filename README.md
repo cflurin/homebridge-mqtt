@@ -65,12 +65,23 @@ The data (payload) is sent/received in a JSON format using following topics:
 topic: homebridge/to/add
 payload: {"name": "flex_lamp", "service": "Switch"}
 ```
+version 0.3.0 and higher
+
+```sh
+topic: homebridge/to/add
+payload: {"name": "flex_lamp", "service_name": "light", "service": "Switch"}
+```
 
 After the new accessory is added homebridge-mqtt sends an acknowledge message:
 
 ```sh
 topic: homebridge/from/response
 payload: {"ack": true, "message": "accessory 'flex_lamp' is added."}
+```
+version 0.3.0 and higher
+```sh
+topic: homebridge/from/response
+payload: {"ack": true, "message": "accessory 'flex_lamp' service_name 'light' is added."}
 ```
 
 ### remove accessory
@@ -130,6 +141,11 @@ payload:
 topic: homebridge/to/set
 payload: {"name": "flex_lamp", "characteristic": "On", "value": true}
 ```
+version 0.3.0 and higher
+```sh
+topic: homebridge/to/set
+payload: {"name": "flex_lamp", "service_name": "light", "characteristic": "On", "value": true}
+```
 
 ### get value (from homebridge)
 
@@ -146,6 +162,11 @@ Homebridge-mqtt will return the cached value to HomeKit. Optionally you can publ
 ```sh
 topic: homebridge/from/set
 payload: {"name": "flex_lamp", "characteristic": "On", "value": true}
+```
+version 0.3.0 and higher
+```sh
+topic: homebridge/from/set
+payload: {"name": "flex_lamp", "service_name": "light", "characteristic": "On", "value": true}
 ```
 
 ### set reachability
@@ -266,7 +287,7 @@ property = 0 or 1
 #
 # Multliple Services
 
-The latest version supports multliple services. To handle multiple services a new property `service_name` has been introduced.
+Version 0.3.0 and higher supports multliple services. To handle multiple services a new property `service_name` has been introduced.
 **Note:** `remove accessory`, `get accessory/accessories` and `set reachability` don't need the property `service_name`.
 
 ## Howto examples 
