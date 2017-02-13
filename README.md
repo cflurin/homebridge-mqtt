@@ -57,15 +57,14 @@ The data (payload) is sent/received in a JSON format using following topics:
 * homebridge/from/response
 * homebridge/from/identify
 
+#
+**Version 0.3.0** and higher supports `multliple services`. To handle multiple services a new property `service_name` has been introduced.
+
+**Note:** To add a service to an existing accessory (created prior version 0.3.0) please first remove the accessory and add it again.
+
 ## Howto examples
 
 ### add accessory
-
-```sh
-topic: homebridge/to/add
-payload: {"name": "flex_lamp", "service": "Switch"}
-```
-version 0.3.0 and higher
 
 ```sh
 topic: homebridge/to/add
@@ -76,12 +75,14 @@ After the new accessory is added homebridge-mqtt sends an acknowledge message:
 
 ```sh
 topic: homebridge/from/response
-payload: {"ack": true, "message": "accessory 'flex_lamp' is added."}
-```
-version 0.3.0 and higher
-```sh
-topic: homebridge/from/response
 payload: {"ack": true, "message": "accessory 'flex_lamp' service_name 'light' is added."}
+```
+
+### add a service
+
+```sh
+topic: homebridge/to/add/service
+payload: {"name": "multi_sensor", "service_name": "Humidity", "service": "HumiditySensor"}
 ```
 
 ### remove accessory
@@ -114,7 +115,7 @@ homebridge sends the accessory definition:
 topic: homebridge/from/response
 payload:
   {
-    "outdoor_temp": {"service": "TemperatureSensor", "characteristics": {"CurrentTemperature": "13.4"}}
+    "outdoor_temp": {"services": {"Temperature": "TemperatureSensor"}, "characteristics": {"CurrentTemperature": "13.4"}}
   }
 ```
 
@@ -129,19 +130,14 @@ homebridge sends all accessory definitions:
 topic: homebridge/from/response
 payload:
   {
-    "node_switch":{"service":"Switch","characteristics":{"On":true}},
-    "office_lamp":{"service":"Lightbulb","characteristics":{"On":"blank","Brightness":65}},
-    "at_home":{"service":"OccupancySensor","characteristics":{"OccupancyDetected":1}}
+    "node_switch":{"services":{"light": "Switch"},"characteristics":{"On":true}},
+    "office_lamp":{"services":{office_light":"Lightbulb"},"characteristics":{"On":"blank","Brightness":65}},
+    "living_temp":{"services":{"living_temperature":"TemperatureSensor"},"characteristics":{"CurrentTemperature":19.6}}
   }
 ```
 
 ### set value (to homebridge)
 
-```sh
-topic: homebridge/to/set
-payload: {"name": "flex_lamp", "characteristic": "On", "value": true}
-```
-version 0.3.0 and higher
 ```sh
 topic: homebridge/to/set
 payload: {"name": "flex_lamp", "service_name": "light", "characteristic": "On", "value": true}
@@ -151,7 +147,7 @@ payload: {"name": "flex_lamp", "service_name": "light", "characteristic": "On", 
 
 ```sh
 topic: homebridge/from/get
-payload: {"name": "flex_lamp", "characteristic": "On"}
+payload: {"name": "flex_lamp", "service_name": "light", "characteristic": "On"}
 ```
 
 Homebridge-mqtt will return the cached value to HomeKit. Optionally you can publish the actual value using
@@ -159,11 +155,6 @@ Homebridge-mqtt will return the cached value to HomeKit. Optionally you can publ
 
 ### set value (from homebridge)
 
-```sh
-topic: homebridge/from/set
-payload: {"name": "flex_lamp", "characteristic": "On", "value": true}
-```
-version 0.3.0 and higher
 ```sh
 topic: homebridge/from/set
 payload: {"name": "flex_lamp", "service_name": "light", "characteristic": "On", "value": true}
@@ -283,43 +274,6 @@ characteristic = ContactSensorState
 format = UINT8
 property = 0 or 1
 ```
-
-#
-# Multliple Services
-
-Version 0.3.0 and higher supports multliple services. To handle multiple services a new property `service_name` has been introduced.
-**Note:** `remove accessory`, `get accessory/accessories` and `set reachability` don't need the property `service_name`.
-
-## Howto examples 
-
-### First add an accessory
-
-```sh
-topic: homebridge/to/add
-payload: {"name": "multi_sensor", "service_name": "Temperature", "service": "TemperatureSensor"}
-```
-
-### Now add a service
-
-```sh
-topic: homebridge/to/add/service
-payload: {"name": "multi_sensor", "service_name": "Humidity", "service": "HumiditySensor"}
-```
-
-### add more services
-```sh
-topic: homebridge/to/add/service
-payload: {"name": "multi_sensor", "service_name": "Light", "service": "LightSensor"}
-```
-
-### set value (to homebridge)
-
-```sh
-topic: homebridge/to/set
-payload: {"name": "multi_sensor", "service_name": "Humidity", "characteristic": "CurrentRelativeHumidity", "value": 40}
-```
-
-**Note:** To add a service to an existing accessory (created prior version 0.3.0) please first remove the accessory and add it again.
 
 #
 # Node-red example
