@@ -43,16 +43,6 @@ function MqttPlatform(log, config, api) {
     this.log("storagePath = %s", storagePath);
     process.exit(1);
   }
-     
-  // experimental
-  try {
-    var HomeKitTypes = Utils.getHomeKitTypes();
-    this.log.debug("MqttPlattform %s", JSON.stringify(HomeKitTypes, null, 2));
-    this.log.debug("MqttPlattform Number of Service_types %s", Object.keys(HomeKitTypes).length);
-    this.log.debug("MqttPlattform %s", HomeKitTypes['0000008C-0000-1000-8000-0026BB765291']);
-  } catch(err) {
-    this.log.debug("MqttPlattform error %s", err.message);
-  }
   
   plugin_version = Utils.readPluginVersion();
   this.log("%s v%s", plugin_name, plugin_version);
