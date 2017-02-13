@@ -130,8 +130,8 @@ homebridge sends all accessory definitions:
 topic: homebridge/from/response
 payload:
   {
-    "node_switch":{"services":{"light": "Switch"},"characteristics":{"On":true}},
-    "office_lamp":{"services":{office_light":"Lightbulb"},"characteristics":{"On":"blank","Brightness":65}},
+    "node_switch":{"services":{"light":"Switch"},"characteristics":{"On":true}},
+    "office_lamp":{"services":{"office_light":"Lightbulb"},"characteristics":{"On":"blank","Brightness":65}},
     "living_temp":{"services":{"living_temperature":"TemperatureSensor"},"characteristics":{"CurrentTemperature":19.6}}
   }
 ```
@@ -180,7 +180,7 @@ payload: {"name": "flex_lamp", "manufacturer": "espressif", "model": "esp8266-12
 
 ```sh
 topic: homebridge/from/identify
-payload: {"name": "flex_lamp"}
+payload: {"name":"indoor_temp","manufacturer":"homebridge-mqtt","model":"v0.3.0","serialnumber":"2017-02-13T12:17"}
 ```
 
 ### define characterstic
