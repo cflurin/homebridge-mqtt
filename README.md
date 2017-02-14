@@ -4,7 +4,7 @@
 [npm-image]: http://img.shields.io/npm/v/homebridge-mqtt.svg
 [npm-url]: https://npmjs.org/package/homebridge-mqtt
 
-Homebridge-mqtt is a Plugin for Homebridge. The mqtt-API supports the main homebridge functions. This allows you to add and control accessories from a "Bridge" or "Gateway" with a mqtt API. [Node-RED](http://nodered.org/) is the perfect platform to use with homebridge-mqtt.
+Homebridge-mqtt is a Plugin for Homebridge. The mqtt-API supports the main homebridge functions. This allows you to add and control accessories from a "Bridge" or "Device" with a mqtt API. [Node-RED](http://nodered.org/) is the perfect platform to use with homebridge-mqtt.
 
 Note-RED is a visual tool for wiring together hardware devices, APIs and online services.
 
@@ -79,10 +79,19 @@ payload: {"ack": true, "message": "accessory 'flex_lamp' service_name 'light' is
 ```
 
 ### add a service
+**Note:** an accessory with the same `name` must be added before.
+
 
 ```sh
 topic: homebridge/to/add/service
 payload: {"name": "multi_sensor", "service_name": "Humidity", "service": "HumiditySensor"}
+```
+
+After the service is added homebridge-mqtt sends an acknowledge message:
+
+```sh
+topic: homebridge/from/response
+payload: {"ack": true, "message": "service_name 'Humidity', service 'HumiditySensor' is added."}
 ```
 
 ### remove accessory
@@ -193,7 +202,7 @@ payload:
   {
     "name": "living_temp",
     "service": "TemperatureSensor",
-    "CurrentTemperature": {"minValue": -20, "maxValue": 60,"minStep": 1}
+    "CurrentTemperature": {"minValue": -20, "maxValue": 60, "minStep": 1}
   }
 ```
 
