@@ -229,7 +229,6 @@ payload:
     "CurrentHorizontalTiltAngle": {"minValue": 0, "minStep": 5},
     "TargetHorizontalTiltAngle": {"minValue": 0, "minStep": 5}
   }
-
 ```
 
 [HomeKitTypes.js](https://github.com/KhaosT/HAP-NodeJS/blob/master/lib/gen/HomeKitTypes.js) describes all the predifined Services, Characteristcs, format and properties for the `value` e.g.:
