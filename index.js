@@ -58,6 +58,7 @@ function MqttPlatform(log, config, api) {
     "Characteristic": Characteristic,
     "addAccessory": this.addAccessory.bind(this),
     "removeAccessory": this.removeAccessory.bind(this),
+    "removeService": this.removeService.bind(this),
     "getAccessories": this.getAccessories.bind(this),
     "updateReachability": this.updateReachability.bind(this),
     "setAccessoryInformation": this.setAccessoryInformation.bind(this),
@@ -220,6 +221,41 @@ MqttPlatform.prototype.removeAccessory = function(name) {
   }
   this.log("removeAccessory %s", message);
   this.Mqtt.sendAck(ack, message);
+}
+
+MqttPlatform.prototype.removeService = function(m_accessory) {
+
+  var message;
+  var name = m_accessory.name;
+  var service_name = m_accessory.service_name;
+  
+  if (typeof(this.accessories[name]) === "undefined") {
+    message = "accessory '" + name + "' not found.";
+    this.log("removeAccessory %s", message);
+    this.Mqtt.sendAck(false, message);
+    return;
+  }
+  
+  if (this.accessories[name].service_namesList.indexOf(service_name) < 0) {
+    message = "service_name '" + service_name + "' undefined.";
+    this.log("removeAccessory %s", message);
+    this.Mqtt.sendAck(false, message);
+    return;
+  }
+  
+  if (typeof this.hap_accessories[name].getServiceByUUIDAndSubType(service_name, service_name) === "undefined") {   
+    message = "accessory '" + name + "' service_name '" + service_name + "' not found.";
+    this.log("removeAccessory %s", message);
+    this.Mqtt.sendAck(false, message);
+    return;
+  }
+  
+  this.accessories[name].removeService(service_name);
+  
+  //this.log.debug("removeService '%s' '%s'", name, service_name);
+  message = "accessory '" + name + "' service_name '" + service_name + "' is removed.";
+  this.log("removeAccessory %s", message);
+  this.Mqtt.sendAck(true, message);
 }
 
 MqttPlatform.prototype.updateReachability = function(accessory) {

@@ -48,6 +48,7 @@ The data (payload) is sent/received in a JSON format using following topics:
 * homebridge/to/add
 * homebridge/to/add/service
 * homebridge/to/remove
+* homebridge/to/remove/service
 * homebridge/to/get
 * homebridge/to/set
 * homebridge/to/set/reachability
@@ -71,7 +72,7 @@ topic: homebridge/to/add
 payload: {"name": "flex_lamp", "service_name": "light", "service": "Switch"}
 ```
 
-After the new accessory is added homebridge-mqtt sends an acknowledge message:
+response:
 
 ```sh
 topic: homebridge/from/response
@@ -87,7 +88,7 @@ topic: homebridge/to/add/service
 payload: {"name": "multi_sensor", "service_name": "Humidity", "service": "HumiditySensor"}
 ```
 
-After the service is added homebridge-mqtt sends an acknowledge message:
+response:
 
 ```sh
 topic: homebridge/from/response
@@ -101,11 +102,25 @@ topic: homebridge/to/remove
 payload: {"name": "flex_lamp"}
 ```
 
-After the accessory is removed homebridge sends an acknowledge message:
+response:
 
 ```sh
 topic: homebridge/from/response
 payload: {"ack": true, "message": "accessory 'flex_lamp' is removed."}
+```
+
+### remove service
+
+```sh
+topic: homebridge/to/remove/service
+payload: {"name": "multi_sensor", "service_name": "Humidity"}
+```
+
+response:
+
+```sh
+topic: homebridge/from/response
+payload: {"ack": true, "message": "accessory 'multi_sensor' service_name 'Humidity' is removed."}
 ```
 
 ### get accessoy/accessories
