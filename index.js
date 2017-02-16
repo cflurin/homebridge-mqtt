@@ -53,6 +53,7 @@ function MqttPlatform(log, config, api) {
     "config": config,
     "log": this.log,
     "plugin_name": plugin_name,
+    "platform_name": platform_name,
     "topic_prefix": topic_prefix,
     "accessories": this.accessories,
     "Characteristic": Characteristic,
@@ -85,7 +86,7 @@ function MqttPlatform(log, config, api) {
       }
       this.initAPI(this.url);
              
-      this.log.debug("Number of chaced Accessories: %s", cachedAccessories);
+      this.log.debug("Number of cached Accessories: %s", cachedAccessories);
       this.log("Number of Accessories: %s", Object.keys(this.accessories).length);
 
     }.bind(this));
@@ -216,6 +217,7 @@ MqttPlatform.prototype.buildParams = function () {
 
   var params = {
     "log": this.log,
+    "platform_name": platform_name,
     "Service": Service,
     "Characteristic": Characteristic,
     "get": this.get.bind(this),
