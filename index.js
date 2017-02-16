@@ -12,6 +12,7 @@ var platform_name = "mqtt";
 var plugin_name = "homebridge-" + platform_name;
 var storagePath;
 var plugin_version;
+var accessory_parameters;
 
 module.exports = function(homebridge) {
   console.log("homebridge API version: " + homebridge.version);
@@ -49,7 +50,7 @@ function MqttPlatform(log, config, api) {
   
   var topic_prefix = config.topic_prefix || "homebridge";
   
-  var params = {
+  var api_parameters = {
     "config": config,
     "log": this.log,
     "plugin_name": plugin_name,
@@ -66,7 +67,17 @@ function MqttPlatform(log, config, api) {
     "addService": this.addService.bind(this)
   }
   
-  this.createAPI(params);
+  this.createAPI(api_parameters);
+  
+  accessory_parameters = {
+    "log": this.log,
+    "platform_name": platform_name,
+    "Service": Service,
+    "Characteristic": Characteristic,
+    "get": this.get.bind(this),
+    "set": this.set.bind(this),
+    "identify": this.identify.bind(this)
+  };
 
   Utils.read_npmVersion(plugin_name, function(npm_version) {
     if (npm_version > plugin_version) {
@@ -128,7 +139,7 @@ MqttPlatform.prototype.addAccessory = function(m_accessory) {
     var newAccessory = new Accessory(name, uuid);
     //this.log.debug("addAccessory UUID = %s", newAccessory.UUID);
     
-    var i_accessory = new MqttAccessory(this.buildParams());
+    var i_accessory = new MqttAccessory(accessory_parameters);
     
     i_accessory.addService(newAccessory, service_name, service_type);
     
@@ -204,28 +215,13 @@ MqttPlatform.prototype.configureAccessory = function(accessory) {
   
   accessory.reachable = true;
     
-  var i_accessory = new MqttAccessory(this.buildParams());
+  var i_accessory = new MqttAccessory(accessory_parameters);
   
   i_accessory.configureAccessory(accessory);
   i_accessory.configureIdentity(accessory);
 
   this.accessories[name] = i_accessory;
   this.hap_accessories[name] = accessory;
-}
-
-MqttPlatform.prototype.buildParams = function () {
-
-  var params = {
-    "log": this.log,
-    "platform_name": platform_name,
-    "Service": Service,
-    "Characteristic": Characteristic,
-    "get": this.get.bind(this),
-    "set": this.set.bind(this),
-    "identify": this.identify.bind(this)
-  }
-  //this.log.debug("configureAccessories %s", JSON.stringify(params.accessory_config));
-  return params;
 }
 
 MqttPlatform.prototype.removeAccessory = function(name) {
@@ -371,9 +367,9 @@ MqttPlatform.prototype.getAccessories = function(name) {
 // API functions
 //
 
-MqttPlatform.prototype.createAPI = function (params) {
+MqttPlatform.prototype.createAPI = function (api_parameters) {
 
-  this.Mqtt = new Mqtt(params);
+  this.Mqtt = new Mqtt(api_parameters);
 }
 
 MqttPlatform.prototype.initAPI = function (url) {
