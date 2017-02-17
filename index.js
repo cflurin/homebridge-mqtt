@@ -54,7 +54,6 @@ function MqttPlatform(log, config, api) {
     "config": config,
     "log": this.log,
     "plugin_name": plugin_name,
-    "platform_name": platform_name,
     "topic_prefix": topic_prefix,
     "Characteristic": Characteristic,
     "addAccessory": this.addAccessory.bind(this),
@@ -91,10 +90,6 @@ function MqttPlatform(log, config, api) {
     this.api.on('didFinishLaunching', function() {
       this.log("Plugin - DidFinishLaunching");
       
-      for (var k in this.accessories) {
-        this.accessories[k].getService_names(this.hap_accessories[k]);
-        //this.log.debug("MqttPlatform %s", JSON.stringify(this.hap_accessories[k], null, 2));
-      }
       this.initAPI(this.url);
              
       this.log.debug("Number of cached Accessories: %s", cachedAccessories);
@@ -194,7 +189,7 @@ MqttPlatform.prototype.addService = function(m_accessory) {
   } else {
     this.accessories[name].addService(this.hap_accessories[name], service_name, service_type);          
     this.accessories[name].configureAccessory(this.hap_accessories[name], m_accessory, service_name, service_type);
-    ack = true; message = "service_name '" + service_name + "', service '" + service_type + "' is added.";
+    ack = true; message = "name '" + name + "', service_name '" + service_name + "', service '" + service_type + "' is added.";
   }
   
   this.sendAck("addService", ack, message);
@@ -256,12 +251,13 @@ MqttPlatform.prototype.removeService = function(m_accessory) {
     ack = false; message = "service_name undefined.";
   
   } else if (this.accessories[name].service_namesList.indexOf(service_name) < 0) {
-    ack = false; message = "service_name '" + service_name + "' undefined.";
+    ack = false; message = "accessory '" + name + "', service_name '" + service_name + "' undefined.";
   
   } else if (typeof this.hap_accessories[name].getServiceByUUIDAndSubType(service_name, service_name) === "undefined") {   
-    ack = false; message = "accessory '" + name + "' service_name '" + service_name + "' not found.";
+    ack = false; message = "accessory '" + name + "', service_name '" + service_name + "' not found.";
   
   } else {
+    this.hap_accessories[name].removeService(this.accessories[name].services[service_name]);
     this.accessories[name].removeService(service_name);
     
     //this.log.debug("removeService '%s' '%s'", name, service_name);    
@@ -424,8 +420,14 @@ MqttPlatform.prototype.setValue = function (m_accessory) {
   }
 }
 
-MqttPlatform.prototype.identify = function (name, manufacturer, model, serialnumber) {
+MqttPlatform.prototype.identify = function (name) {
 
+  var manufacturer = this.hap_accessories[name].getService(Service.AccessoryInformation).getCharacteristic("Manufacturer").value;
+  var model = this.hap_accessories[name].getService(Service.AccessoryInformation).getCharacteristic("Model").value;
+  var serialnumber = this.hap_accessories[name].getService(Service.AccessoryInformation).getCharacteristic("Serial Number").value;
+
+  this.log("identify name '%s' manufacturer '%s' model '%s' serialnumber '%s'", name, manufacturer, model, serialnumber);
+    
   this.Mqtt.identify(name, manufacturer, model, serialnumber);
 }
 
