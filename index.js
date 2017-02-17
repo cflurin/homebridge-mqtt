@@ -56,15 +56,15 @@ function MqttPlatform(log, config, api) {
     "plugin_name": plugin_name,
     "platform_name": platform_name,
     "topic_prefix": topic_prefix,
-    "accessories": this.accessories,
     "Characteristic": Characteristic,
     "addAccessory": this.addAccessory.bind(this),
+    "addService": this.addService.bind(this),
     "removeAccessory": this.removeAccessory.bind(this),
     "removeService": this.removeService.bind(this),
+    "setValue": this.setValue.bind(this),
     "getAccessories": this.getAccessories.bind(this),
     "updateReachability": this.updateReachability.bind(this),
-    "setAccessoryInformation": this.setAccessoryInformation.bind(this),
-    "addService": this.addService.bind(this)
+    "setAccessoryInformation": this.setAccessoryInformation.bind(this)
   }
   
   this.createAPI(api_parameters);
@@ -337,30 +337,42 @@ MqttPlatform.prototype.setAccessoryInformation = function(accessory, response) {
   }
 }
 
-MqttPlatform.prototype.getAccessories = function(name) {
+MqttPlatform.prototype.getAccessories = function(m_accessory) {
 
+  var name;
   var accessories = {};
   var service, characteristics;
   
-  switch (name) {
-    case "*":
-    case "all":
-      for (var k in this.accessories) {
-        //this.log("getAccessories %s", JSON.stringify(this.accessories[k], null, 2));
-        service = this.accessories[k].service_types;
-        characteristics =  this.accessories[k].i_value;
-        accessories[k] = {"services": service, "characteristics": characteristics};
-      }
-    break;
-    
-    default:
-      service = this.accessories[name].service_types;
-      characteristics =  this.accessories[name].i_value;
-      accessories[name] = {"services": service, "characteristics": characteristics};
+  if (typeof m_accessory.name !== "undefined") {
+    name = m_accessory.name;
+  } else {
+    name = "*";
   }
+  
+  if (name !== "*" && typeof(this.accessories[name]) === "undefined") {
+    var message = "name '" + name + "' undefined.";
+    this.sendAck("getAccessories", false, message);
+    
+  } else {
+    switch (name) {
+      case "*":
+      case "all":
+        for (var k in this.accessories) {
+          //this.log.debug("getAccessories %s", JSON.stringify(this.accessories[k], null, 2));
+          service = this.accessories[k].service_types;
+          characteristics =  this.accessories[k].i_value;
+          accessories[k] = {"services": service, "characteristics": characteristics};
+        }
+      break;
+      
+      default:
+        service = this.accessories[name].service_types;
+        characteristics =  this.accessories[name].i_value;
+        accessories[name] = {"services": service, "characteristics": characteristics};
+    }
 
-  //this.log("getAccessory %s", JSON.stringify(accessories, null, 2));
-  this.sendAccessories(accessories);
+    this.sendAccessories(accessories);
+  }
 }
 
 //
@@ -387,6 +399,31 @@ MqttPlatform.prototype.set = function (name, service_name, c, value, callback) {
   this.Mqtt.set(name, service_name, c, value, callback);
 }
 
+MqttPlatform.prototype.setValue = function (m_accessory) {
+
+  var ack, message;
+  var result = {};
+  
+  result = this.validate(m_accessory);
+  
+  if (!result.isValid) {
+    ack = false; message = result.message;
+  
+  } else {
+    result = this.accessories[m_accessory.name].save_and_setValue(platform_name, result.service_name, m_accessory.characteristic, result.value);
+    
+    if (!result.isValid) {
+      ack = false; message = "name '" + m_accessory.name + "', value '" + result.value + "' outside range";
+    } else {
+      ack = true;
+    }
+  }
+  
+  if (!ack) {
+    this.sendAck("setValue", ack, message);
+  }
+}
+
 MqttPlatform.prototype.identify = function (name, manufacturer, model, serialnumber) {
 
   this.Mqtt.identify(name, manufacturer, model, serialnumber);
@@ -399,7 +436,50 @@ MqttPlatform.prototype.sendAccessories = function (accessories) {
 
 MqttPlatform.prototype.sendAck = function (function_name, ack, message) {
 
-  this.Mqtt.sendAck(ack, message);
   this.log("%s %s", function_name, message);
-      
+  this.Mqtt.sendAck(ack, message);
+}
+
+MqttPlatform.prototype.validate = function(m_accessory) {
+
+  var name = m_accessory.name;
+  var service_name = m_accessory.service_name;
+  var c = m_accessory.characteristic;
+  var value = m_accessory.value;
+  
+  var ack;
+  var message = "";
+  
+  // backwards compatible to v0.2.4
+  if (typeof service_name === "undefined") {
+    service_name = name;
+    if (typeof this.accessories[name].services[service_name] === "undefined") {
+      ack = false; message = "name '" + name + "', service_name '" + service_name + "' undefined.";
+      this.log.debug("validate %s", message);
+      return {isValid: ack, message: message, service_name: service_name, value: value};
+    }
+  }
+  
+  if(typeof(this.accessories[name]) === "undefined") {
+    ack = false; message = "name '" + name + "' undefined.";
+    
+  } else if (typeof(Characteristic[c]) !== "function") {
+    ack = false; message = "characteristic '" + c + "' undefined.";
+    
+  } else if (typeof(m_accessory.value) === "undefined" || m_accessory.value === null) {
+    ack = false; message = "name '" + name + "' value undefined.";
+    
+  } else if (typeof this.accessories[name].services[service_name] == "undefined") {
+    ack = false; message = "name '" + name + "', service_name '" + service_name + "' undefined.";
+    
+  } else if (typeof(this.accessories[name].services[service_name].getCharacteristic(Characteristic[c])) === "undefined") {
+    message = "name '" + name + "' service_name '" + service_name + "' characteristic do not match.";
+    
+  } else {
+    ack = true; message = "name '" + name + "' valid.";
+  }
+  
+  this.log.debug("validate %s", message);
+  
+  return {isValid: ack, message: message, service_name: service_name, value: value};
 }
