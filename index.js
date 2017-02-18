@@ -404,12 +404,15 @@ MqttPlatform.prototype.setValue = function (m_accessory) {
   
   if (!result.isValid) {
     ack = false; message = result.message;
+    this.log.debug("setValue %s", message);
   
   } else {
     result = this.accessories[m_accessory.name].save_and_setValue(platform_name, result.service_name, m_accessory.characteristic, result.value);
     
     if (!result.isValid) {
       ack = false; message = "name '" + m_accessory.name + "', value '" + result.value + "' outside range";
+      this.log.debug("setValue %s", message);
+          
     } else {
       ack = true;
     }
@@ -480,8 +483,6 @@ MqttPlatform.prototype.validate = function(m_accessory) {
   } else {
     ack = true; message = "name '" + name + "' valid.";
   }
-  
-  this.log.debug("validate %s", message);
   
   return {isValid: ack, message: message, service_name: service_name, value: value};
 }
