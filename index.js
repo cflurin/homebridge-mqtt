@@ -63,7 +63,6 @@ function PluginPlatform(log, config, api) {
   this.controller = new Controller(c_parameters);
 
   if (api) {
-    //this.api = api;
 
     api.on('didFinishLaunching', function() {
       this.log("Plugin - DidFinishLaunching");
