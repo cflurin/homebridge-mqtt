@@ -65,12 +65,9 @@ function PluginPlatform(log, config, api) {
   if (api) {
 
     api.on('didFinishLaunching', function() {
-      this.log("Plugin - DidFinishLaunching");
-      
-      this.controller.initPluginAPI();
-             
       this.log("Number of cached Accessories: %s", cachedAccessories);
-
+      
+      this.controller.start();      
     }.bind(this));
   }
 }
