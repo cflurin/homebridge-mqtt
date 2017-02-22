@@ -1,6 +1,5 @@
 'use strict';
 
-var util = require('util');
 var Utils = require('./lib/utils.js').Utils;
 var Controller = require('./lib/controller.js').Controller;
 

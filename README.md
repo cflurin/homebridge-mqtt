@@ -79,7 +79,7 @@ topic: homebridge/from/response
 payload: {"ack": true, "message": "accessory 'flex_lamp' service_name 'light' is added."}
 ```
 
-### add a service
+### add service
 **Note:** an accessory with the same `name` must be added before.
 
 
