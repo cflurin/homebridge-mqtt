@@ -4,7 +4,7 @@
 [npm-image]: http://img.shields.io/npm/v/homebridge-mqtt.svg
 [npm-url]: https://npmjs.org/package/homebridge-mqtt
 
-Homebridge-mqtt is a Plugin for Homebridge. The mqtt-API supports the main homebridge functions. This allows you to add and control accessories from a "Bridge" or "Device" with a mqtt API. [Node-RED](http://nodered.org/) is the perfect platform to use with homebridge-mqtt.
+Homebridge-mqtt is a Plugin for Homebridge. The design is based on MVC pattern, have a look at [homebridge-mvc](https://github.com/cflurin/homebridge-mvc). Homebridge-mqtt is a dynamic Plugin that allows you to add and control accessories from a "Bridge" or "Device" with a mqtt API. [Node-RED](http://nodered.org/) is the perfect platform to use with homebridge-mqtt.
 
 Note-RED is a visual tool for wiring together hardware devices, APIs and online services.
 
