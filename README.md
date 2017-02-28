@@ -123,7 +123,7 @@ topic: homebridge/from/response
 payload: {"ack": true, "message": "accessory 'multi_sensor' service_name 'Humidity' is removed."}
 ```
 
-### get accessoy/accessories
+### get accessory/accessories
 
 The purpose of this topic is to retrieve accessory Definitions.
 Use `homebridge/from/set` to control your devices.
@@ -138,9 +138,18 @@ homebridge sends the accessory definition:
 ```sh
 topic: homebridge/from/response
 payload:
-  {
-    "outdoor_temp": {"services": {"Temperature": "TemperatureSensor"}, "characteristics": {"CurrentTemperature": "13.4"}}
+{
+  "outdoor_temp": {
+    "services": {
+      "Temperature": "TemperatureSensor"
+    },
+    "characteristics": {
+      "Temperature": {
+        "CurrentTemperature": 13.4
+      }
+    }
   }
+}
 ```
 
 ```sh
@@ -153,11 +162,39 @@ homebridge sends all accessory definitions:
 ```sh
 topic: homebridge/from/response
 payload:
-  {
-    "node_switch":{"services":{"light":"Switch"},"characteristics":{"On":true}},
-    "office_lamp":{"services":{"office_light":"Lightbulb"},"characteristics":{"On":"blank","Brightness":65}},
-    "living_temp":{"services":{"living_temperature":"TemperatureSensor"},"characteristics":{"CurrentTemperature":19.6}}
+{
+  "node_switch": {
+    "services": {
+      "light": "Switch"
+    },
+    "characteristics": {
+      "Light": {
+        "On": true
+      }
+    }
+  },
+  "office_lamp": {
+    "services": {
+      "office_light": "Lightbulb"
+    },
+    "characteristics": {
+      "office_light": {
+        "On": "blank",
+        "Brightness": 65
+      }
+    }
+  },
+  "living_temp": {
+    "services": {
+      "living_temperature": "TemperatureSensor"
+    },
+    "characteristics": {
+      "living_temperature": {
+        "CurrentTemperature": 19.6
+      }
+    }
   }
+}
 ```
 
 ### set value (to homebridge)
