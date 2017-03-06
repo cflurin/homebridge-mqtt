@@ -85,14 +85,14 @@ payload: {"ack": true, "message": "accessory 'flex_lamp' service_name 'light' is
 
 ```sh
 topic: homebridge/to/add/service
-payload: {"name": "multi_sensor", "service_name": "Humidity", "service": "HumiditySensor"}
+payload: {"name": "multi_sensor", "service_name": "humidity", "service": "HumiditySensor"}
 ```
 
 response:
 
 ```sh
 topic: homebridge/from/response
-payload: {"ack": true, "message": "service_name 'Humidity', service 'HumiditySensor' is added."}
+payload: {"ack": true, "message": "service_name 'humidity', service 'HumiditySensor' is added."}
 ```
 
 ### remove accessory
@@ -113,19 +113,19 @@ payload: {"ack": true, "message": "accessory 'flex_lamp' is removed."}
 
 ```sh
 topic: homebridge/to/remove/service
-payload: {"name": "multi_sensor", "service_name": "Humidity"}
+payload: {"name": "multi_sensor", "service_name": "humidity"}
 ```
 
 response:
 
 ```sh
 topic: homebridge/from/response
-payload: {"ack": true, "message": "accessory 'multi_sensor' service_name 'Humidity' is removed."}
+payload: {"ack": true, "message": "accessory 'multi_sensor' service_name 'humidity' is removed."}
 ```
 
 ### get accessory/accessories
 
-The purpose of this topic is to retrieve accessory Definitions.
+The purpose of this topic is to retrieve accessory configurations.
 Use `homebridge/from/set` to control your devices.
 
 ```sh
@@ -133,7 +133,7 @@ topic: homebridge/to/get
 payload: {"name": "outdoor_temp"}
 ```
 
-homebridge sends the accessory definition:
+homebridge sends the accessory configuration:
 
 ```sh
 topic: homebridge/from/response
@@ -157,7 +157,7 @@ topic: homebridge/to/get
 payload: {"name": "*"}
 ```
 
-homebridge sends all accessory definitions:
+homebridge sends all accessory configurations:
 
 ```sh
 topic: homebridge/from/response
@@ -253,6 +253,7 @@ topic: homebridge/to/add
 payload:
   {
     "name": "living_temp",
+    "service_name": "temperature",
     "service": "TemperatureSensor",
     "CurrentTemperature": {"minValue": -20, "maxValue": 60, "minStep": 1}
   }
@@ -265,6 +266,7 @@ topic: homebridge/to/add
 payload: 
   {
     "name": "living_lamp",
+    "service_name": "light",
     "service": "Lightbulb",
     "Brightness": "default"
   }
@@ -275,6 +277,7 @@ topic: homebridge/to/add
 payload:
   {
     "name": "bathroom_blind",
+    "service_name": "blind",
     "service": "WindowCovering",
     "CurrentPosition": {"minStep": 5},
     "TargetPosition": {"minStep": 5},
