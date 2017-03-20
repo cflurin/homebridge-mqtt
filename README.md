@@ -1,6 +1,7 @@
 # homebridge-mqtt
 
 [![NPM version][npm-image]][npm-url]
+
 [npm-image]: http://img.shields.io/npm/v/homebridge-mqtt.svg
 [npm-url]: https://npmjs.org/package/homebridge-mqtt
 
