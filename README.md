@@ -340,7 +340,7 @@ property = 0 or 1
 ```
 
 #
-# Node-red example
+# Node-red example
 
 ![node-red-mqtt](https://cloud.githubusercontent.com/assets/5056710/17394282/9ac0afbc-5a28-11e6-8d6e-01d2e1a32870.jpg)
 
