@@ -66,7 +66,7 @@ The data (payload) is sent/received in a JSON format using following topics:
 
 ## Howto examples
 
-### add accessory
+### add accessory
 
 ```sh
 topic: homebridge/to/add
@@ -80,7 +80,7 @@ topic: homebridge/from/response
 payload: {"ack": true, "message": "accessory 'flex_lamp' service_name 'light' is added."}
 ```
 
-### add service
+### add service
 **Note:** an accessory with the same `name` must be added before.
 
 
@@ -96,7 +96,7 @@ topic: homebridge/from/response
 payload: {"ack": true, "message": "service_name 'humidity', service 'HumiditySensor' is added."}
 ```
 
-### remove accessory
+### remove accessory
 
 ```sh
 topic: homebridge/to/remove
@@ -110,7 +110,7 @@ topic: homebridge/from/response
 payload: {"ack": true, "message": "accessory 'flex_lamp' is removed."}
 ```
 
-### remove service
+### remove service
 
 ```sh
 topic: homebridge/to/remove/service
@@ -124,7 +124,7 @@ topic: homebridge/from/response
 payload: {"ack": true, "message": "accessory 'multi_sensor' service_name 'humidity' is removed."}
 ```
 
-### get accessory/accessories
+### get accessory/accessories
 
 The purpose of this topic is to retrieve accessory configurations.
 Use `homebridge/from/set` to control your devices.
@@ -198,14 +198,14 @@ payload:
 }
 ```
 
-### set value (to homebridge)
+### set value (to homebridge)
 
 ```sh
 topic: homebridge/to/set
 payload: {"name": "flex_lamp", "service_name": "light", "characteristic": "On", "value": true}
 ```
 
-### get value (from homebridge)
+### get value (from homebridge)
 
 ```sh
 topic: homebridge/from/get
@@ -215,14 +215,14 @@ payload: {"name": "flex_lamp", "service_name": "light", "characteristic": "On"}
 Homebridge-mqtt will return the cached value to HomeKit. Optionally you can publish the actual value using
 `homebridge/to/set`.
 
-### set value (from homebridge)
+### set value (from homebridge)
 
 ```sh
 topic: homebridge/from/set
 payload: {"name": "flex_lamp", "service_name": "light", "characteristic": "On", "value": true}
 ```
 
-### set reachability
+### set reachability
 
 ```sh
 topic: homebridge/to/set/reachability
@@ -231,7 +231,7 @@ or
 payload: {"name": "flex_lamp", "reachable": false}
 ```
 
-### set accessory information
+### set accessory information
 
 ```sh
 topic: homebridge/to/set/accessoryinformation
@@ -245,7 +245,7 @@ topic: homebridge/from/identify
 payload: {"name":"indoor_temp","manufacturer":"homebridge-mqtt","model":"v0.3.0","serialnumber":"2017-02-13T12:17"}
 ```
 
-### define characterstic
+### define characterstic
 
 The required characteristics are added with the default properties. If you need to change the default, define the characteristic-name with the properties. e.g.:
 
