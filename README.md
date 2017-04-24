@@ -31,12 +31,21 @@ Add the mqtt-platform in config.json in your home directory inside `.homebridge`
   "platform": "mqtt",
   "name": "mqtt",
   "url": "mqtt://127.0.0.1",
+  "topic_type": "multiple",
   "topic_prefix": "homebridge",
   "username": "foo",
   "password": "bar"
 }
 
 ```
+**Note:** 
+topic_type `multiple`: the data is sent to all devices, e.g.
+```sh
+topic : homebridge/from/set
+```
+topic_type `single`: the data is sent to a single device, the accessory name is added to the topic, e.g.
+```sh
+topic : homebridge/from/set/flex_lamp
 
 Replace `127.0.0.1` with the ip-address of your mqtt broker.
 
