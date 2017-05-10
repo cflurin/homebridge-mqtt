@@ -34,7 +34,10 @@ Add the mqtt-platform in config.json in your home directory inside `.homebridge`
   "topic_type": "multiple",
   "topic_prefix": "homebridge",
   "username": "foo",
-  "password": "bar"
+  "password": "bar",
+  "cert": "/path/to/certificate.pem",
+  "key": "path/to/key.pem",
+  "ca": "/path/to/ca_certificate.pem"
 }
 
 ```
