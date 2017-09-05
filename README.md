@@ -250,7 +250,7 @@ payload: {"name": "flex_lamp", "reachable": false}
 
 ```sh
 topic: homebridge/to/set/accessoryinformation
-payload: {"name": "flex_lamp", "manufacturer": "espressif", "model": "esp8266-12", "serialnumber": "4711"}
+payload: {"name": "flex_lamp", "manufacturer": "espressif", "model": "esp8266-12", "serialnumber": "4711", "firmwarerevision": "1.1.0"}
 ```
 
 ### identify accessory
