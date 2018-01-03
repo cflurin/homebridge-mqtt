@@ -87,6 +87,21 @@ The data (payload) is sent/received in a JSON format using following topics:
 topic: homebridge/to/add
 payload: {"name": "flex_lamp", "service_name": "light", "service": "Switch"}
 ```
+or with the additional accessory informations
+
+```sh
+topic: homebridge/to/add
+payload: 
+{
+  "name": "flex_lamp",
+  "service_name": "light",
+  "service": "Switch",
+  "manufacturer": "lamp_manu",
+  "model": "flex_007",
+  "serialnumber": "4711",
+  "firmwarerevision": "1.0.0"
+}
+```
 
 response:
 
