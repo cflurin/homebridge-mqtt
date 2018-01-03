@@ -31,6 +31,7 @@ Add the mqtt-platform in config.json in your home directory inside `.homebridge`
   "platform": "mqtt",
   "name": "mqtt",
   "url": "mqtt://127.0.0.1",
+  "port": "1883",
   "topic_type": "multiple",
   "topic_prefix": "homebridge",
   "username": "foo",
@@ -39,7 +40,6 @@ Add the mqtt-platform in config.json in your home directory inside `.homebridge`
   "key": "path/to/key.pem",
   "ca": "/path/to/ca_certificate.pem"
 }
-
 ```
 
 Replace `127.0.0.1` with the ip-address of your mqtt broker.
