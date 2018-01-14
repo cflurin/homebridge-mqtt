@@ -38,7 +38,8 @@ Add the mqtt-platform in config.json in your home directory inside `.homebridge`
   "password": "bar",
   "cert": "/path/to/certificate.pem",
   "key": "path/to/key.pem",
-  "ca": "/path/to/ca_certificate.pem"
+  "ca": "/path/to/ca_certificate.pem",
+  "qos": 1
 }
 ```
 
@@ -75,7 +76,7 @@ The data (payload) is sent/received in a JSON format using following topics:
 * homebridge/from/identify
 
 #
-**Version 0.3.0** and higher supports `multliple services`. To handle multiple services a new property `service_name` has been introduced.
+**Version 0.3.0** and higher supports `multiple services`. To handle multiple services a new property `service_name` has been introduced.
 
 **Note:** To add a service to an existing accessory (created prior version 0.3.0) please first remove the accessory and add it again.
 
