@@ -10,6 +10,7 @@ var platform_name = "mqtt";
 var plugin_name = "homebridge-" + platform_name;
 var storagePath;
 var plugin_version;
+var multiple = false;
 
 module.exports = function(homebridge) {
   console.log("homebridge API version: " + homebridge.version);
@@ -29,9 +30,9 @@ function PluginPlatform(log, config, api) {
   this.log = log;
   
   if (typeof(config) === "undefined" || config === null) {
-    this.log.error("config undefined or null!");
-    this.log("storagePath = %s", storagePath);
-    process.exit(1);
+    multiple = true;
+    this.log.warn("config undefined in '%s', irrelevant by multiple homebridge instances.", storagePath);
+    return;
   }
   
   plugin_version = Utils.readPluginVersion();
@@ -72,9 +73,11 @@ function PluginPlatform(log, config, api) {
 }
 
 PluginPlatform.prototype.configureAccessory = function(accessory) {
-
+  
   //this.log.debug("configureAccessory %s", JSON.stringify(accessory, null, 2));
   cachedAccessories++;
   
-  this.controller.configureAccessory(accessory);
+  if (!multiple) {
+    this.controller.configureAccessory(accessory);
+  }
 }
