@@ -11,7 +11,7 @@ Note-RED is a visual tool for wiring together hardware devices, APIs and online 
 
 ### Installation
 
-If you are new to Homebridge, please first read the Homebridge [documentation](https://github.com/nfarina/homebridge) to install Homebridge.
+If you are new to Homebridge, please first read the [documentation](https://github.com/nfarina/homebridge) to install Homebridge.
 
 Install homebridge-mqtt:
 ```sh
