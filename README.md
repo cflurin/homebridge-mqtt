@@ -323,7 +323,7 @@ payload:
   }
 ```
 
-[HomeKitTypes.js](https://github.com/KhaosT/HAP-NodeJS/blob/master/lib/gen/HomeKitTypes.js) describes all the predifined Services, Characteristcs, format and properties for the `value` e.g.:
+[HomeKit.ts](https://github.com/KhaosT/HAP-NodeJS/blob/master/src/lib/gen/HomeKit.ts) describes all the predifined Services, Characteristcs, format and properties for the `value` e.g.:
 
 ```
 /**
