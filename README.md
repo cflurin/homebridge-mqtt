@@ -234,6 +234,110 @@ payload:
 }
 ```
 
+```sh
+topic: homebridge/to/get
+payload: {"name": "*_props"}
+```
+
+homebridge sends all accessory configurations, including properties:
+
+```sh
+topic: homebridge/from/response
+payload:
+{
+  "node_switch": {
+    "services": {
+      "light": "Switch"
+    },
+    "characteristics": {
+      "Light": {
+        "On": true
+      }
+    },
+    "properties": {
+      "Light": {
+        "On": {
+          "format": "bool",
+          "unit": null,
+          "minValue": null,
+          "maxValue": null,
+          "minStep": null,
+          "perms": [
+            "pr",
+            "pw",
+            "ev"
+          ]
+        }
+      }
+    },
+    "office_lamp": {
+      "services": {
+        "office_light": "Lightbulb"
+      },
+      "characteristics": {
+        "office_light": {
+          "On": "blank",
+          "Brightness": 65
+        }
+      },
+      "properties": {
+        "office_light": {
+          "On": {
+            "format": "bool",
+            "unit": null,
+            "minValue": null,
+            "maxValue": null,
+            "minStep": null,
+            "perms": [
+              "pr",
+              "pw",
+              "ev"
+            ]
+          },
+          "Brightness": {
+            "format": "int",
+            "unit": "percentage",
+            "minValue": 0,
+            "maxValue": 100,
+            "minStep": 1,
+            "perms": [
+              "pr",
+              "pw",
+              "ev"
+            ]
+          }
+        }
+      }
+    },
+    "living_temp": {
+      "services": {
+        "living_temperature": "TemperatureSensor"
+      },
+      "characteristics": {
+        "living_temperature": {
+          "CurrentTemperature": 19.6
+        }
+      },
+      "properties": {
+        "living_temperature": {
+          "CurrentTemperature": {
+            "format": "float",
+            "unit": "celsius",
+            "minValue": 0,
+            "maxValue": 100,
+            "minStep": 0.1,
+            "perms": [
+              "pr",
+              "ev"
+            ]
+          }
+        }
+      }
+    }
+  }
+}
+```
+
 ### set value (to homebridge)
 
 ```sh
