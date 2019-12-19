@@ -61,6 +61,14 @@ topic_type `single`: the data is sent to a single device, the accessory name is 
 topic : homebridge/from/set/flex_lamp
 ```
 
+**Note 2:** 
+
+Optional parameter `request_id`: A unique (user defined) value may be added to any request, it will be included in the corresponding response
+```sh
+request_id : 4711
+```
+
+
 #
 # mqtt API
 
