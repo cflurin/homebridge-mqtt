@@ -381,7 +381,7 @@ response:
 
 ```sh
 topic: homebridge/from/response
-payload: {"name": "flex_lamp", "service_name": "light", "characteristic": "On", "value": true}
+payload: {"name": "flex_lamp", "service_name": "light", "characteristic": "On", "cachedValue": true}
 ```
 
 ### set reachability
