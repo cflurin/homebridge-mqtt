@@ -357,7 +357,7 @@ payload: {"name": "flex_lamp", "service_name": "light", "characteristic": "On", 
 
 ```sh
 topic: homebridge/from/get
-payload: {"name": "flex_lamp", "service_name": "light", "characteristic": "On"}
+payload: {"name": "flex_lamp", "service_name": "light", "characteristic": "On", "cachedValue": true}
 ```
 
 Homebridge-mqtt will return the cached value to HomeKit. Optionally you can publish the actual value using
@@ -367,6 +367,20 @@ Homebridge-mqtt will return the cached value to HomeKit. Optionally you can publ
 
 ```sh
 topic: homebridge/from/set
+payload: {"name": "flex_lamp", "service_name": "light", "characteristic": "On", "value": true}
+```
+
+### get (cached) value (to homebridge)
+
+```sh
+topic: homebridge/to/get/characteristic
+payload: {"name": "flex_lamp", "service_name": "light", "characteristic": "On"}
+```
+
+response:
+
+```sh
+topic: homebridge/from/response
 payload: {"name": "flex_lamp", "service_name": "light", "characteristic": "On", "value": true}
 ```
 
