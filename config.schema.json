@@ -1,7 +1,8 @@
 {
   "pluginAlias": "mqtt",
   "pluginType": "platform",
-  "singulare": true,
+  "singular": true,
+  "headerDisplay": "Homebridge-mqtt is a dynamic Plugin that allows you to add and control accessories with a mqtt API.",
   "schema": {
     "type": "object",
     "properties": {
@@ -10,7 +11,27 @@
         "type": "string",
         "default": "mqtt",
         "required": true
+      },
+      "url":  {
+        "title": "url",
+        "type": "string",
+        "default": "mqtt://120.0.0.1",
+        "required": true,
+        "description": "Replace 127.0.0.1 with the ip-address of your mqtt broker."
+      },
+      "username": {
+        "title": "username",
+        "type": "string",
+        "required": false,
+        "description": "Add a username if required."
+      },
+      "password": {
+        "title": "password",
+        "type": "string",
+        "required": false,
+        "description": "Add a password if required."
       }
+    
     }
   }
 }

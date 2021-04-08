@@ -20,8 +20,8 @@ Edit the mqtt-platform in config.json.
 
 ```sh
 {
-  "platform": "mqtt",
   "name": "mqtt",
+  "platform": "mqtt",
   "url": "mqtt://127.0.0.1"
 }
 ```
