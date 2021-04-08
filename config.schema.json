@@ -1,5 +1,5 @@
 {
-  "pluginAlias": "homebridge-mqtt-platform",
+  "pluginAlias": "mqtt",
   "pluginType": "platform",
   "singulare": true,
   "schema": {
@@ -8,7 +8,7 @@
       "name": {
         "title": "Name",
         "type": "string",
-        "default": "homebridge-mqtt",
+        "default": "mqtt",
         "required": true
       }
     }

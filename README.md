@@ -13,13 +13,10 @@ Note-RED is a visual tool for wiring together hardware devices, APIs and online 
 
 If you are new to Homebridge, please first read the [documentation](https://github.com/nfarina/homebridge) to install Homebridge.
 
-Install homebridge-mqtt:
-```sh
-sudo npm install -g homebridge-mqtt
-```
+Install the homebridge-mqtt plugin through Homebridge Config UI X
 
 ### Configuration
-Add the mqtt-platform in config.json in your home directory inside `.homebridge`.
+Edit the mqtt-platform in config.json.
 
 ```sh
 {
