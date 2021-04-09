@@ -34,6 +34,11 @@ function PluginPlatform(log, config, api) {
     this.log.warn("config undefined in '%s', irrelevant by multiple homebridge instances.", storagePath);
     return;
   }
+
+  if (typeof config.url === "undefined") {
+    this.log.error("url undefined. Please got to Settings and add a valid url.");
+    return;
+  }
   
   plugin_version = Utils.readPluginVersion();
   this.log("%s v%s", plugin_name, plugin_version);
