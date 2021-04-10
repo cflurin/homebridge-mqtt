@@ -19,19 +19,64 @@
         "required": true,
         "description": "Replace 127.0.0.1 with the ip-address of your mqtt broker."
       },
+      "port": {
+        "title": "port",
+        "type": "string",
+        "required": false,
+        "default": "1883",
+        "description": "Mqtt port (optional, default 1883)."
+      },
       "username": {
         "title": "username",
         "type": "string",
         "required": false,
-        "description": "Add a username if required."
+        "description": "Add a username for the mqtt server if required."
       },
       "password": {
         "title": "password",
         "type": "string",
         "required": false,
-        "description": "Add a password if required."
+        "description": "Add a password for the mqtt server if required."
+      },
+      "qos": {
+        "title": "qos",
+        "type": "integer",
+        "required": false,
+        "default": 0,
+        "description": "0: fire and forget, 1: at least once, 2: once and once only. Default: 0."
+      },
+      "cert": {
+        "title": "cert",
+        "type": "string",
+        "required": false,
+        "description": "Path to the certificate (optional)."
+      },
+      "key": {
+        "title": "key",
+        "type": "string",
+        "required": false,
+        "description": "Path to the key (optional)."
+      },
+      "ca": {
+        "title": "ca",
+        "type": "string",
+        "required": false,
+        "description": "Path to the ca_certificate (optional)."
+      },
+      "topic_type": {
+        "title": "topic_type",
+        "type": "string",
+        "required": false,
+        "default": "multiple",
+        "description": "multiple: the data is sent to all devices, single: the data is sent to a single device. Defualt: multiple."
+      },
+      "topic_prefix": {
+        "title": "topic_prefix",
+        "type": "string",
+        "required": false,
+        "default": "homebridge",
+        "description": "User defined topix_prefix e.g. 'hmtest'. Defualt 'homebridge'."
       }
-    
     }
   }
 }
