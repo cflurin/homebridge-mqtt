@@ -26,7 +26,6 @@
     "homebridge": ">=0.4.16"
   },
   "dependencies": {
-    "request": ">=2.79.0",
     "mqtt": ">=2.4.0"
   }
 }

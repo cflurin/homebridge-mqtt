@@ -30,13 +30,13 @@
         "title": "username",
         "type": "string",
         "required": false,
-        "description": "Add a username for the mqtt server if required."
+        "description": "Add a username for the mqtt broker if required."
       },
       "password": {
         "title": "password",
         "type": "string",
         "required": false,
-        "description": "Add a password for the mqtt server if required."
+        "description": "Add a password for the mqtt broker if required."
       },
       "qos": {
         "title": "qos",
