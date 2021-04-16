@@ -17,7 +17,7 @@ Install the homebridge-mqtt plugin through Homebridge Config UI X.
 
 ### Configuration/Setting
 
-Got to Homebridge Config UI X, select `Plugins > Homebridge Mqtt` and click `SETTINGS`.
+Go to Homebridge Config UI X, select `Plugins > Homebridge Mqtt` and click `SETTINGS`.
 
 `config.json`
 
