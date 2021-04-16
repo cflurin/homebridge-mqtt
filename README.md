@@ -77,7 +77,7 @@ The data (payload) is sent/received in a JSON format using following topics:
 
 **Note 2:** 
 
-Optional parameter `request_id`: A unique (user defined) value may be added to any request, it will be included in the corresponding response
+Optional parameter `request_id`: A unique (user defined) value may be added to any request, it will be included in the corresponding response.
 ```sh
 request_id : 4711
 ```
