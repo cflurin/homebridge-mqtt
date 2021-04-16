@@ -13,41 +13,34 @@ Note-RED is a visual tool for wiring together hardware devices, APIs and online 
 
 If you are new to Homebridge, please first read the [documentation](https://github.com/nfarina/homebridge) to install Homebridge.
 
-Install the homebridge-mqtt plugin through Homebridge Config UI X
+Install the homebridge-mqtt plugin through Homebridge Config UI X.
 
-### Configuration
-Edit the mqtt-platform in config.json.
+### Configuration/Setting
+
+Got to Homebridge Config UI X, select `Plugins > Homebridge Mqtt` and click `SETTINGS`.
+
+`config.json`
 
 ```sh
-{
-  "name": "mqtt",
-  "platform": "mqtt",
-  "url": "mqtt://127.0.0.1"
-}
+"platforms": [
+  {
+    "platform": "mqtt",
+    "name": "mqtt",
+    "url": "mqtt://127.0.0.1",
+    "port": "1883",
+    "username": "foo",
+    "password": "bar",
+    "qos": 1,
+    "cert": "/path/to/certificate.pem",
+    "key": "path/to/key.pem",
+    "ca": "/path/to/ca_certificate.pem",
+    "topic_type": "multiple",
+    "topic_prefix": "homebridge"
+  }
+]
 ```
 
 Replace `127.0.0.1` with the ip-address of your mqtt broker.
-
-### Optional Settings
-
-Only add the optional settings if you need them.
-
-```sh
-{
-  ...
-  "port": "1883",
-  "topic_type": "multiple",
-  "topic_prefix": "homebridge",
-  "username": "foo",
-  "password": "bar",
-  "cert": "/path/to/certificate.pem",
-  "key": "path/to/key.pem",
-  "ca": "/path/to/ca_certificate.pem",
-  "qos": 1
-}
-```
-
-**Note:** 
 
 topic_type `multiple`: the data is sent to all devices, e.g.
 ```sh
@@ -57,14 +50,6 @@ topic_type `single`: the data is sent to a single device, the accessory name is 
 ```sh
 topic : homebridge/from/set/flex_lamp
 ```
-
-**Note 2:** 
-
-Optional parameter `request_id`: A unique (user defined) value may be added to any request, it will be included in the corresponding response
-```sh
-request_id : 4711
-```
-
 
 #
 # mqtt API
@@ -89,6 +74,13 @@ The data (payload) is sent/received in a JSON format using following topics:
 **Version 0.3.0** and higher supports `multiple services`. To handle multiple services a new property `service_name` has been introduced.
 
 **Note:** To add a service to an existing accessory (created prior version 0.3.0) please first remove the accessory and add it again.
+
+**Note 2:** 
+
+Optional parameter `request_id`: A unique (user defined) value may be added to any request, it will be included in the corresponding response
+```sh
+request_id : 4711
+```
 
 ## Howto examples
 
