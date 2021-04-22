@@ -34,6 +34,7 @@ Go to Homebridge Config UI X, select `Plugins > Homebridge Mqtt` and click `SETT
     "cert": "/path/to/certificate.pem",
     "key": "path/to/key.pem",
     "ca": "/path/to/ca_certificate.pem",
+    "client_id": "some-string",
     "topic_type": "multiple",
     "topic_prefix": "homebridge"
   }
