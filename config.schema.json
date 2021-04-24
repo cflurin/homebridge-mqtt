@@ -63,6 +63,12 @@
         "required": false,
         "description": "Path to the ca_certificate (optional)."
       },
+      "client_id": {
+        "title": "client_id",
+        "type": "string",
+        "required": false,
+        "description": "Mqtt client id (optional)."
+      },
       "topic_type": {
         "title": "topic_type",
         "type": "string",
