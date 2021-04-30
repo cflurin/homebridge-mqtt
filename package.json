@@ -1,6 +1,6 @@
 {
   "name": "homebridge-mqtt",
-  "version": "0.7.8",
+  "version": "1.0.0",
   "description": "MQTT Plugin for Homebridge",
   "license": "ISC",
   "author": {
