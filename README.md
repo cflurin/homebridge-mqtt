@@ -1,4 +1,5 @@
 # homebridge-mqtt
+[![verified-by-homebridge](https://badgen.net/badge/homebridge/verified/purple)](https://github.com/homebridge/homebridge/wiki/Verified-Plugins)
 
 [![NPM version][npm-image]][npm-url]
 
