@@ -6,3 +6,12 @@
 node_modules/
 npm-debug.log
 .node-version
+package-lock.json
+
+# Testing
+test/node_modules/
+test/package-lock.json
+test/.env
+
+# Build artifacts
+*.tgz
