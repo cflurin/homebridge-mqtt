@@ -74,9 +74,11 @@ function logDebug(message) {
   }
 }
 
-// Generate unique test accessory names
+// Generate unique test accessory names (HomeKit compliant - no underscores)
 function generateAccessoryName(prefix) {
-  return `${prefix}_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
+  const timestamp = Date.now().toString();
+  const random = Math.floor(Math.random() * 1000).toString();
+  return `${prefix} ${timestamp} ${random}`;
 }
 
 // Wait for a response message
@@ -122,7 +124,7 @@ function publish(topic, payload) {
 
 async function testAddAccessory() {
   logTest('Add Accessory (Switch)');
-  const name = generateAccessoryName('test_switch');
+  const name = generateAccessoryName('testswitch');
   
   const responsePromise = waitForAnyResponse();
   
@@ -153,7 +155,7 @@ async function testAddAccessory() {
 
 async function testAddMultipleServices() {
   logTest('Add Accessory with Multiple Services');
-  const name = generateAccessoryName('test_multi');
+  const name = generateAccessoryName('testmulti');
   
   // Add base accessory
   let responsePromise = waitForAnyResponse();
@@ -318,7 +320,7 @@ async function testReachabilityWithoutStatusActive() {
   logTest('Set Reachability - Service WITHOUT StatusActive (e.g. Lightbulb)');
   
   // Create a Lightbulb accessory (does NOT have StatusActive)
-  const name = generateAccessoryName('test_lightbulb');
+  const name = generateAccessoryName('testlightbulb');
   
   let responsePromise = waitForAnyResponse();
   publish(`${TOPIC_PREFIX}/to/add`, {
@@ -439,7 +441,7 @@ async function testRemoveAccessory(accessoryName) {
 
 async function testOptionalCharacteristics() {
   logTest('Add Accessory with Optional Characteristics');
-  const name = generateAccessoryName('test_optional');
+  const name = generateAccessoryName('testoptional');
   
   const responsePromise = waitForAnyResponse();
   
@@ -469,7 +471,7 @@ async function testOptionalCharacteristics() {
 
 async function testCustomCharacteristicProps() {
   logTest('Add Accessory with Custom Characteristic Properties');
-  const name = generateAccessoryName('test_props');
+  const name = generateAccessoryName('testprops');
   
   const responsePromise = waitForAnyResponse();
   
@@ -503,7 +505,7 @@ async function testCustomCharacteristicProps() {
 
 async function testDuplicateAccessoryName() {
   logTest('Error Handling: Duplicate Accessory Name');
-  const name = generateAccessoryName('test_duplicate');
+  const name = generateAccessoryName('testduplicate');
   
   // Add first accessory
   let responsePromise = waitForAnyResponse();
@@ -546,7 +548,7 @@ async function testDuplicateAccessoryName() {
 
 async function testInvalidServiceType() {
   logTest('Error Handling: Invalid Service Type');
-  const name = generateAccessoryName('test_invalid');
+  const name = generateAccessoryName('testinvalid');
   
   const responsePromise = waitForAnyResponse();
   publish(`${TOPIC_PREFIX}/to/add`, {
@@ -572,7 +574,7 @@ async function testInvalidServiceType() {
 
 async function testMissingRequiredFields() {
   logTest('Error Handling: Missing Required Fields (no service)');
-  const name = generateAccessoryName('test_missing');
+  const name = generateAccessoryName('testmissing');
   
   const responsePromise = waitForAnyResponse();
   publish(`${TOPIC_PREFIX}/to/add`, {
@@ -598,7 +600,7 @@ async function testMissingRequiredFields() {
 
 async function testSetValueOutOfRange() {
   logTest('Error Handling: Set Value Outside Valid Range');
-  const name = generateAccessoryName('test_range');
+  const name = generateAccessoryName('testrange');
   
   // Add a temperature sensor with custom range
   let responsePromise = waitForAnyResponse();
@@ -676,7 +678,7 @@ async function testRemoveNonExistentAccessory() {
 
 async function testAccessoryNameWithSpecialCharacters() {
   logTest('Edge Case: Accessory Name with Special Characters');
-  const name = 'test-special_chars.123';
+  const name = 'testspecial chars.123';
   
   const responsePromise = waitForAnyResponse();
   publish(`${TOPIC_PREFIX}/to/add`, {
@@ -703,7 +705,7 @@ async function testAccessoryNameWithSpecialCharacters() {
 
 async function testVeryLongAccessoryName() {
   logTest('Edge Case: Very Long Accessory Name');
-  const name = 'test_' + 'a'.repeat(100) + '_' + Date.now();
+  const name = 'test ' + 'a'.repeat(100) + ' ' + Date.now();
   
   const responsePromise = waitForAnyResponse();
   publish(`${TOPIC_PREFIX}/to/add`, {
@@ -730,7 +732,7 @@ async function testVeryLongAccessoryName() {
 // Main Test Runner
 async function runTests() {
   log('\n╔═══════════════════════════════════════════════════════════╗', 'cyan');
-  log('║   Homebridge-MQTT Automated Test Suite (v2.0 Compat)    ║', 'cyan');
+  log('║   Homebridge-MQTT Automated Test Suite (v2.0 Compat)      ║', 'cyan');
   log('╚═══════════════════════════════════════════════════════════╝', 'cyan');
   
   log(`\nConnecting to MQTT broker: ${MQTT_BROKER}`, 'yellow');
@@ -957,4 +959,3 @@ process.on('SIGINT', () => {
 
 // Run tests
 runTests();
-

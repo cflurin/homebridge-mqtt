@@ -122,7 +122,7 @@ MQTT_BROKER=mqtts://192.168.1.100:8883 MQTT_USER=admin MQTT_PASS=secret123 node 
 ### Example Output
 ```
 ╔═══════════════════════════════════════════════════════════╗
-║   Homebridge-MQTT Automated Test Suite (v2.0 Compat)    ║
+║   Homebridge-MQTT Automated Test Suite (v2.0 Compat)      ║
 ╚═══════════════════════════════════════════════════════════╝
 
 ✓ Connected to MQTT broker
@@ -130,18 +130,20 @@ MQTT_BROKER=mqtts://192.168.1.100:8883 MQTT_USER=admin MQTT_PASS=secret123 node 
 
 ▶ Testing: Add Accessory (Switch)
   ℹ Publishing to homebridge/to/add: {...}
-  ✓ Accessory 'test_switch_1697123456_789' added successfully
+  ✓ Accessory 'test switch 1697123456 789' added successfully
 
 ▶ Testing: Set Reachability - Service WITH StatusActive (e.g. Switch)
-  ✓ Set 'test_switch_1697123456_789' to unreachable
+  ✓ Set 'test switch 1697123456 789' to unreachable
   ℹ Service supports StatusActive - should update characteristic
-  ✓ Set 'test_switch_1697123456_789' back to reachable
+  ✓ Set 'test switch 1697123456 789' back to reachable
 
 ▶ Testing: Set Reachability - Service WITHOUT StatusActive (e.g. Lightbulb)
-  ✓ Lightbulb 'test_lightbulb_1697123457_456' added
-  ✓ Set 'test_lightbulb_1697123457_456' to unreachable (gracefully handled without StatusActive)
+  ✓ Lightbulb 'test lightbulb 1697123457 456' added
+  ✓ Set 'test lightbulb 1697123457 456' to unreachable (gracefully handled without StatusActive)
   ℹ Service does NOT support StatusActive - should log and continue without error
-  ✓ Set 'test_lightbulb_1697123457_456' back to reachable
+  ✓ Set 'test lightbulb 1697123457 456' back to reachable
+
+...
 
 ============================================================
 Test Summary
@@ -232,18 +234,6 @@ When running tests, monitor your Homebridge logs for:
 ```
 Error: updateReachability is not a function
 TypeError: Cannot read property 'StatusActive' of undefined
-```
-
-## CI/CD Integration
-
-The test suite returns proper exit codes and can be integrated into CI/CD pipelines:
-
-```yaml
-# GitHub Actions example
-- name: Run homebridge-mqtt tests
-  run: |
-    npm install
-    npm test
 ```
 
 ## Customization

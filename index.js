@@ -45,7 +45,7 @@ function PluginPlatform(log, config, api) {
   
   Utils.read_npmVersion(plugin_name, function(npm_version) {
     if (npm_version > plugin_version) {
-      this.log("A new version %s is avaiable", npm_version);
+      this.log("A new version %s is available", npm_version);
     }
   }.bind(this));
   
