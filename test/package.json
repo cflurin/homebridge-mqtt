@@ -1,0 +1,27 @@
+{
+  "name": "homebridge-mqtt-test-suite",
+  "version": "1.0.0",
+  "description": "Automated test suite for homebridge-mqtt Homebridge v2.0 compatibility",
+  "main": "homebridge-mqtt-test.js",
+  "scripts": {
+    "test": "node homebridge-mqtt-test.js",
+    "test:local": "node homebridge-mqtt-test.js mqtt://127.0.0.1:1883",
+    "test:remote": "node homebridge-mqtt-test.js $MQTT_BROKER_URL $MQTT_USER $MQTT_PASS",
+    "test:env": "node homebridge-mqtt-test.js"
+  },
+  "keywords": [
+    "homebridge",
+    "homebridge-mqtt",
+    "mqtt",
+    "testing",
+    "automation"
+  ],
+  "author": "emes",
+  "license": "MIT",
+  "dependencies": {
+    "mqtt": "^5.3.5"
+  },
+  "engines": {
+    "node": ">=18.20.4"
+  }
+}

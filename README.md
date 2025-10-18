@@ -8,13 +8,25 @@
 
 Homebridge-mqtt is a Plugin for Homebridge. The design is based on MVC pattern, have a look at [homebridge-mvc](https://github.com/cflurin/homebridge-mvc). Homebridge-mqtt is a dynamic Plugin that allows you to add and control accessories from a "Bridge" or "Device" with a mqtt API. [Node-RED](http://nodered.org/) is the perfect platform to use with homebridge-mqtt.
 
-Note-RED is a visual tool for wiring together hardware devices, APIs and online services.
+Node-RED is a visual tool for wiring together hardware devices, APIs and online services.
 
 ### Installation
 
-If you are new to Homebridge, please first read the [documentation](https://github.com/nfarina/homebridge) to install Homebridge.
+If you are new to Homebridge, please first read the [documentation](https://github.com/homebridge/homebridge) to install Homebridge.
 
-Install the homebridge-mqtt plugin through Homebridge Config UI X.
+Install the homebridge-mqtt plugin through [Homebridge Config UI X](https://github.com/homebridge/homebridge-config-ui-x).
+
+### Homebridge v2.0 Compatibility
+
+✅ **This plugin is fully compatible with Homebridge v2.0**
+
+**Tested and verified on:**
+- Homebridge v1.6 and v1.11.0
+- Homebridge v2.0-beta.30
+
+**Requirements:**
+- Node.js 18.20.4 or later
+- Homebridge 1.6.0 or later
 
 ### Configuration/Setting
 
@@ -65,7 +77,7 @@ The data (payload) is sent/received in a JSON format using following topics:
 * homebridge/to/remove/service
 * homebridge/to/get
 * homebridge/to/set
-* homebridge/to/set/reachability
+* homebridge/to/set/reachability (deprecated)
 * homebridge/to/set/accessoryinformation
 * homebridge/from/get
 * homebridge/from/set
@@ -492,8 +504,22 @@ format = UINT8
 property = 0 or 1
 ```
 
+## Testing
+
+An automated test suite is available to verify plugin functionality and Homebridge v2.0 compatibility.
+
+### Quick Start
+```bash
+cd test
+npm install
+node homebridge-mqtt-test.js mqtt://your-broker:1883 username password
+```
+
+For detailed testing information, see [test/README.md](test/README.md).
+
+
 #
-# Node-red example
+# Node-RED example
 
 ![node-red-mqtt](https://cloud.githubusercontent.com/assets/5056710/17394282/9ac0afbc-5a28-11e6-8d6e-01d2e1a32870.jpg)
 

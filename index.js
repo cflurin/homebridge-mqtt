@@ -12,17 +12,17 @@ var storagePath;
 var plugin_version;
 var multiple = false;
 
-module.exports = function(homebridge) {
-  console.log("homebridge API version: " + homebridge.version);
-  
-  HapAccessory = homebridge.platformAccessory;
-  
-  Service = homebridge.hap.Service;
-  Characteristic = homebridge.hap.Characteristic;
-  UUIDGen = homebridge.hap.uuid; // Universally Unique IDentifier
-  storagePath = homebridge.user.storagePath();
-    
-  homebridge.registerPlatform(plugin_name, platform_name, PluginPlatform, true);
+module.exports = (api) => {
+  console.log("homebridge API version: " + api.version);
+
+  // Use api-provided handles for HB v2 compatibility
+  HapAccessory = api.platformAccessory;
+  Service = api.hap.Service;
+  Characteristic = api.hap.Characteristic;
+  UUIDGen = api.hap.uuid; // Universally Unique IDentifier
+  storagePath = api.user.storagePath();
+
+  api.registerPlatform(plugin_name, platform_name, PluginPlatform, true);
 }
 
 function PluginPlatform(log, config, api) {
@@ -36,7 +36,7 @@ function PluginPlatform(log, config, api) {
   }
 
   if (typeof config.url === "undefined") {
-    this.log.error("url undefined. Please got to Settings and add a valid url.");
+    this.log.error("url undefined. Please go to Settings and add a valid url.");
     return;
   }
   
@@ -45,7 +45,7 @@ function PluginPlatform(log, config, api) {
   
   Utils.read_npmVersion(plugin_name, function(npm_version) {
     if (npm_version > plugin_version) {
-      this.log("A new version %s is avaiable", npm_version);
+      this.log("A new version %s is available", npm_version);
     }
   }.bind(this));
   
