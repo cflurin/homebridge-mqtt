@@ -5,7 +5,7 @@ on:
     branches:
       - main        # or the branch you want to trigger publishing
     tags:
-      - 'v1.02'        # triggers on tag pushes like v1.2.3
+      - 'v*'        # triggers on tag pushes like v1.2.3
 
 jobs:
   publish:
