@@ -1,6 +1,7 @@
 name: Publish to npm
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main   # or the branch you want to trigger publishing
