@@ -1,0 +1,32 @@
+name: Publish to npm
+
+on:
+  push:
+    branches:
+      - main        # or the branch you want to trigger publishing
+    tags:
+      - 'v1.02'        # triggers on tag pushes like v1.2.3
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'   # or your Node version
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build (if needed)
+        run: npm run build
+
+      - name: Publish to npm
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
